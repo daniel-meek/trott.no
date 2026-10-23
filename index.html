@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trøtt.no – Minimalistisk</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #fafafa;
+            color: #171717;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem 4rem;
+        }
+        @media (max-width: 600px) {
+            body { padding: 2rem; }
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 1rem;
+            font-size: 1.2rem;
+            color: #737373;
+        }
+        main {
+            margin: auto 0;
+            max-width: 900px;
+        }
+        .question {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: #525252;
+            margin-bottom: 1rem;
+        }
+        .giant-yes {
+            font-size: clamp(5rem, 15vw, 12rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+            color: #171717;
+            margin-bottom: 1rem;
+        }
+        .current-time {
+            font-size: 1rem;
+            color: #737373;
+            margin-bottom: 1rem;
+        }
+        .dynamic-sub {
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            font-weight: 400;
+            color: #525252;
+            max-width: 650px;
+            line-height: 1.3;
+        }
+        footer {
+            border-top: 1px solid #e5e5e5;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .excuse-wrapper {
+            max-width: 1200px;
+        }
+        .excuse-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #a3a3a3;
+            margin-bottom: 0.25rem;
+        }
+        .excuse-text {
+            font-size: 1.4rem;
+            color: #404040;
+        }
+        button {
+            background: none;
+            border: 1px solid #d4d4d4;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            color: #171717;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        button:hover {
+            border-color: #171717;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    
+    <!--
+    
+    <header>
+        <span>trøtt.no</span>
+    </header>
+    
+    -->
+    
+    <main>
+        <div class="question">Bør du sove litt nå?</div>
+        <div class="giant-yes">JA.</div>
+        <div id="current-time" class="current-time"></div>
+        <div id="dynamic-text" class="dynamic-sub"></div>
+    </main>
+
+    <footer>
+        <div class="excuse-wrapper">
+            <div class="excuse-label">Notat til omverdenen</div>
+            <p id="excuse-text" class="excuse-text"></p>
+        </div>
+        <button onclick="nyUnnskyldning()">Ny unnskyldning →</button>
+    </footer>
+
+    <script>
+        const tidstabell = {
+            1: [ // Mandag
+                { tid: 0, tekst: "Det er midt på natta. Hvorfor er du våken?" },
+                { tid: 400, tekst: "Det er alt for tidlig å være våken. Legg deg." },
+                { tid: 500, tekst: "Ikke engang fuglene har stått opp på en mandag. Lukk øynene." },
+                { tid: 600, tekst: "Alarmen din tar feil. Det er mandag morgen, trykk slumre." },
+                { tid: 700, tekst: "Det er mandag klokka sju. Kroppen din er fortsatt i helgemodus." },
+                { tid: 800, tekst: "Mandag morgen. Kaffen virker ikke uansett, gå og legg deg igjen." },
+                { tid: 900, tekst: "Ukens første møte burde vært en e-post. Og du burde vært i senga." },
+                { tid: 1100, tekst: "Du har overlevd tre timer av mandagen. Det krever en strekk på sofaen." },
+                { tid: 1200, tekst: "Lunsjtid. Matkomaen kommer snart, like greit å legge seg ned først som sist." },
+                { tid: 1400, tekst: "Den beryktede mandags-kneika. Ingen merker om du dupper av i 20 minutter." },
+                { tid: 1600, tekst: "Arbeidsdagen er over, og du brukte opp ukas energi før klokka tolv. Sov litt." },
+                { tid: 1800, tekst: "Middagshvilen er en undervurdert norsk kulturskatt." },
+                { tid: 2000, tekst: "Mandag kveld er egentlig bare forlengelsen av en altfor lang morgen." },
+                { tid: 2200, tekst: "Leggetid. Jo fortere du sovner, jo fortere er mandagen over." },
+                { tid: 2300, tekst: "Du lå og scrollet for lenge. Nå må du sove." }
+            ],
+            2: [ // Tirsdag
+                { tid: 0, tekst: "Det er natt til tirsdag. Ingenting spennende skjer nå uansett." },
+                { tid: 400, tekst: "Klokka er fire på en tirsdag. Dette er definisjonen på umenneskelig." },
+                { tid: 600, tekst: "Tirsdag er mandagens trøtte lillebror. Unn deg en halvtime til på øyet." },
+                { tid: 700, tekst: "Du er fortsatt på etterskudd med søvn fra i går." },
+                { tid: 800, tekst: "Tirsdag morgen. Det er fire dager til helg – spar på kreftene." },
+                { tid: 900, tekst: "Hjernen din kjører på 12 % kapasitet akkurat nå. Lad batteriene." },
+                { tid: 1100, tekst: "Snart lunsj, men en lur hadde smakt enda bedre." },
+                { tid: 1200, tekst: "Blodsukkeret stuper. Horisontal stilling er eneste kjente kur." },
+                { tid: 1400, tekst: "To-knekken på en tirsdag treffer hardere enn vanlig. Lukk øynene." },
+                { tid: 1500, tekst: "Klokka tre på tirsdag er ukas lengste time. Sov deg gjennom den." },
+                { tid: 1600, tekst: "Du har bidratt nok til BNP i dag. Finn nærmeste pute." },
+                { tid: 1800, tekst: "En kjapp tirsdagslur på sofaen ødelegger ikke nattesøvnen." },
+                { tid: 2000, tekst: "Det er mørkt, det er tirsdag, og dyna roper på deg." },
+                { tid: 2200, tekst: "Puss tennene. Verden klarer seg uten deg de neste åtte timene." },
+                { tid: 2300, tekst: "Hvis du legger deg nå, får du akkurat nok søvn til å være trøtt i morgen også." }
+            ],
+            3: [ // Onsdag
+                { tid: 0, tekst: "Midnatt midt i uka. Legg bort telefonen." },
+                { tid: 400, tekst: "Klokka er 04:00. Selv vekkerklokka di synes synd på deg nå." },
+                { tid: 600, tekst: "Halvveis i uka, men 100 % utslitt. Sov litt til." },
+                { tid: 700, tekst: "Onsdag morgen. Kroppen din stemmer for hjemmekontor under dyna." },
+                { tid: 800, tekst: "«Lille lørdag» betyr at man bør starte dagen med lørdagens søvnrutiner." },
+                { tid: 1000, tekst: "Du har stirret på samme skjerm i to timer. Øynene trenger hvilemodus." },
+                { tid: 1200, tekst: "Halvveis gjennom onsdagen. Feir med en liten strekk." },
+                { tid: 1400, tekst: "Onsdag klokka to. Tyngdekraften drar ekstra hardt i øyelokkene nå." },
+                { tid: 1500, tekst: "Det er vitenskapelig bevist at ingenting produktivt skjer etter kl. 15 på en onsdag." },
+                { tid: 1600, tekst: "Hjemsreise og sofakollaps står på agendaen." },
+                { tid: 1700, tekst: "Ettermiddagsluren midt i uka er det eneste som holder samfunnet sammen." },
+                { tid: 1900, tekst: "Du gjespet nettopp, gjorde du ikke? Gå og legg deg." },
+                { tid: 2100, tekst: "Klokka har passert 21. Alt fornuftig du gjør nå kan vente til torsdag." },
+                { tid: 2200, tekst: "Senga venter. Ikke la den vente forgjeves." },
+                { tid: 2300, tekst: "Nok skjermtid for i dag. God natt." }
+            ],
+            4: [ // Torsdag
+                { tid: 0, tekst: "Det er torsdag. Du har opparbeidet deg et solid søvnunderskudd siden mandag." },
+                { tid: 400, tekst: "Ingen bør se dette klokkeslettet på en torsdag. Sov videre." },
+                { tid: 600, tekst: "Torsdag er dagen der trøttheten fra hele uka samler seg opp." },
+                { tid: 700, tekst: "Bare én dag igjen til fredag, men du kommer deg ikke dit uten mer søvn." },
+                { tid: 800, tekst: "Torsdag morgen. Koffein er bare et dyrt lån av energi – ta en lur i stedet." },
+                { tid: 1000, tekst: "Hodet er tungt, skuldrene er lave, og senga virker uendelig langt unna." },
+                { tid: 1200, tekst: "Torsdagslunsj etterfulgt av torsdagskoma." },
+                { tid: 1400, tekst: "Den berømte to-knekken på en torsdag. Du trenger søvn, ikke viljestyrke." },
+                { tid: 1500, tekst: "Du leser samme setning for fjerde gang nå. Ta deg en blund." },
+                { tid: 1600, tekst: "Torsdag ettermiddag. Kroppen har allerede tatt helg, følg etter." },
+                { tid: 1800, tekst: "En førti minutters powernap på sofaen nå er helt innafor." },
+                { tid: 2000, tekst: "Nesten helg. Start oppladningen tidlig." },
+                { tid: 2100, tekst: "Hvis du legger deg nå, er det fredag når du våkner!" },
+                { tid: 2200, tekst: "Pakk deg inn i dyna. Fredagen kommer raskere når du sover." },
+                { tid: 2300, tekst: "Seriøst, legg deg. I morgen er det fredag." }
+            ],
+            5: [ // Fredag
+                { tid: 0, tekst: "Det er teknisk sett fredag, men du må fortsatt sove først." },
+                { tid: 400, tekst: "Altfor tidlig, selv for en fredag. Snu deg rundt." },
+                { tid: 600, tekst: "Det er fredag morgen. Unn deg femten minutter ekstra." },
+                { tid: 700, tekst: "Ukas siste innspurt krever at du ikke sovner stående." },
+                { tid: 800, tekst: "Fredag morgen. Alle andre er også trøtte, så lista ligger lavt i dag." },
+                { tid: 1000, tekst: "Mentalt har du allerede sjekket ut for helgen." },
+                { tid: 1200, tekst: "Fredagslunsj. Herfra og ut går alt i sakte film uansett." },
+                { tid: 1400, tekst: "Klokka er to på en fredag. Det er offisielt lov å gi opp produktiviteten." },
+                { tid: 1500, tekst: "Én time til helg. En rask lur nå, så er du i mål." },
+                { tid: 1600, tekst: "Det er fredag ettermiddag. Du har offisielt lov til å kollapse på sofaen." },
+                { tid: 1800, tekst: "Fredagshvilen: Den viktigste overgangen mellom arbeidsuke og helg." },
+                { tid: 2000, tekst: "Tacoen er spist, og øyelokkene veier bly. Sov på sofaen." },
+                { tid: 2100, tekst: "Du kommer til å sovne fem minutter ut i filmen uansett." },
+                { tid: 2200, tekst: "Det er ingen skam å legge seg klokka ti på en fredag." },
+                { tid: 2300, tekst: "Helga er i gang, og du feirer den best i horisontal tilstand." }
+            ],
+            6: [ // Lørdag
+                { tid: 0, tekst: "Natt til lørdag. Enten er du på vei hjem, eller så burde du sovet for lengst." },
+                { tid: 300, tekst: "Bestill nattmat, drikk et glass vann og kom deg i seng." },
+                { tid: 600, tekst: "Hvorfor er du våken klokka seks på en lørdag? Gå og legg deg!" },
+                { tid: 800, tekst: "Det er lørdag morgen. Verden åpner ikke før klokka tolv. Sov videre." },
+                { tid: 900, tekst: "Helger er skapt for å ta igjen det tapte. Bli under dyna." },
+                { tid: 1000, tekst: "Frokosten kan vente. Søvn er ferskvare." },
+                { tid: 1200, tekst: "Du har vært våken i et par timer nå. På tide med dagens første lur." },
+                { tid: 1400, tekst: "Lørdag ettermiddag er selve gullstandarden for en ettermiddagslur." },
+                { tid: 1600, tekst: "Lad opp til lørdagskvelden med en time på øyet." },
+                { tid: 1800, tekst: "Ingen planer i kveld? Perfekt, senga er ledig." },
+                { tid: 2000, tekst: "Lørdag kveld på sofaen. Pleddet er på, og øynene glir igjen." },
+                { tid: 2200, tekst: "Kroppen din stemmer for tidlig kveld i kveld." },
+                { tid: 2300, tekst: "Nyt at du ikke må sette på alarm til i morgen, og sov godt." }
+            ],
+            0: [ // Søndag
+                { tid: 0, tekst: "Det er søndag. Hele dagen i morgen er dedikert til hvile, start nå." },
+                { tid: 300, tekst: "Klokka er tre natt til søndag. Finn senga." },
+                { tid: 600, tekst: "Det er forbudt ved norsk lov å stå opp klokka seks på en søndag." },
+                { tid: 800, tekst: "Søndag morgen. Snu puta til den kalde siden og sov to timer til." },
+                { tid: 900, tekst: "Det eneste du skal prestere i dag er hvilepuls." },
+                { tid: 1000, tekst: "Søndager uten planer er naturens måte å si «bli i senga» på." },
+                { tid: 1200, tekst: "Halvveis i søndagen. Har du husket å hvile etter frokost?" },
+                { tid: 1400, tekst: "Søndagstur? Nei, søndagslur." },
+                { tid: 1500, tekst: "Det regner sikkert et sted i nærheten. Perfekt sovevær." },
+                { tid: 1600, tekst: "Søndag klokka fire er den offisielle nasjonale sovetimen på sofaen." },
+                { tid: 1800, tekst: "Lad opp til ny uke ved å gjøre absolutt ingenting i vannrett posisjon." },
+                { tid: 1900, tekst: "Søndagsfølelsen kureres best med et teppe og lukkede øyne." },
+                { tid: 2000, tekst: "I morgen er det mandag. Start forberedelsene med å legge deg tidlig." },
+                { tid: 2100, tekst: "Klokka er ni på søndag. Jo mer du sover nå, jo mindre trøtt blir mandagen." },
+                { tid: 2200, tekst: "Puss tenner, sett på alarmen, og få deg en skikkelig natts søvn." },
+                { tid: 2300, tekst: "Mandagen lurer rundt hjørnet. Lukk øynene før den ser deg." }
+            ]
+        };
+
+        function oppdaterTidstekst() {
+            const naa = new Date();
+            const dag = naa.getDay(); 
+            const timeVal = naa.getHours() * 100 + naa.getMinutes();
+
+            const ukedager = [
+                "Søndag", "Mandag", "Tirsdag", "Onsdag",
+                "Torsdag", "Fredag", "Lørdag"
+            ];
+            const timer = String(naa.getHours()).padStart(2, "0");
+            const minutter = String(naa.getMinutes()).padStart(2, "0");
+
+            document.getElementById("current-time").innerText =
+                `Det er ${ukedager[dag]} ${timer}:${minutter}`;
+
+            const dagListe = tidstabell[dag] || tidstabell[1];
+            
+            let aktuellMelding = dagListe[0].tekst;
+            for (let i = 0; i < dagListe.length; i++) {
+                if (timeVal >= dagListe[i].tid) {
+                    aktuellMelding = dagListe[i].tekst;
+                }
+            }
+
+            document.getElementById("dynamic-text").innerText = aktuellMelding;
+        }
+
+        const unnskyldninger = [
+            "«Du har blunket over 10 000 ganger i dag. Øyelokkene dine fortjener en pause.»",
+            "«Det er lavtrykk et eller annet sted i Skandinavia. Kroppen din bare tilpasser seg.»",
+            "«Forskning viser at 100 % av de som er inne på trøtt.no presterer bedre i horisontal stilling.»",
+            "«Hjernen din laster ned en viktig oppdatering. Ikke slå av maskinen, bare lukk øynene.»",
+            "«En 20-minutters powernap øker produktiviteten med 34 %. En to-timers lur føles enda bedre.»",
+            "«Gravitasjonen i Norge er ekstra sterk akkurat i dag. Det er vitenskapelig umulig å sitte oppreist.»",
+            "«Koffein er bare et dyrt lån av energi. Søvn er gratis.»",
+            "«Hvis dyr kan gå i dvale halve året, kan du ta deg 25 minutter på sofaen nå.»",
+
+            "«Dyna har holdt av plass til deg. Det er dårlig stil å ikke møte opp.»",
+            "«Puta di har én jobb. La den få gjøre den.»",
+            "«Sofaen står ikke der bare for å se fin ut. Vis litt initiativ.»",
+            "«Du trenger ikke en bedre grunn. Du trenger en bedre liggestilling.»",
+            "«Øyelokkene dine prøver å avslutte dagen. Ikke gjør dette til en diskusjon.»",
+            "«Senga har aldri bedt deg om å være produktiv. Velg selskapet ditt med omhu.»",
+            "«Den kalde siden av puta venter ikke evig. Grip muligheten.»",
+            "«Du har vært oppreist lenge nok til å bevise poenget.»",
+            "«Pleddet er innen rekkevidde. Resten av dagen kan være utenfor.»",
+            "«Du kan ikke la nyvasket sengetøy gå til spille.»",
+
+            "«Hjernen din har for mange faner åpne. Lukk hele nettleseren.»",
+            "«Du kjører på strømsparing, men nekter å koble til laderen.»",
+            "«Tankene dine står i kø. Steng skranken en liten stund.»",
+            "«Du trenger en omstart, ikke enda en kaffekopp.»",
+            "«Din indre skjerm har blitt mørk. Slutt å trykke på knappene.»",
+            "«Du har mistet forbindelsen til tiltakslysten. Prøv igjen etter en lur.»",
+            "«Hodet ditt viser et lastehjul. Legg deg mens du venter.»",
+            "«Dagens kapasitet er brukt opp. Ikke kjøp mer på avbetaling.»",
+            "«Du har nok bakgrunnsprosesser gående. Sett resten på pause.»",
+            "«Du er ikke treg. Du har bare glemt å lade.»",
+
+            "«Gjøremålslista har ingen bein. Den kommer ikke til å løpe fra deg.»",
+            "«Du har sett på kalenderen. Det teller som en aktivitet.»",
+            "«Ingenting på den lista blir bedre av at du stirrer trøtt på den.»",
+            "«Du kan utsette støvsugingen. Støvet har allerede funnet seg til rette.»",
+            "«Klesvasken ligger der helt fint uten tilsyn.»",
+            "«Oppvasken har god tid. Ta deg litt av den samme luksusen.»",
+            "«Du har allerede flyttet én ting i dag. Nå kan du flytte deg til sofaen.»",
+            "«Det er lov å ha én oppgave på planen: ligge godt.»",
+            "«Du trenger ikke rydde hele huset før du bruker senga.»",
+            "«Morgendagens deg kan få noen oppgaver også.»",
+
+            "«Dette møtet kunne vært en e-post. E-posten kunne ventet til etter luren.»",
+            "«Du har lest samme linje tre ganger. Nå er det puta sin tur.»",
+            "«Skjermen har fått nok oppmerksomhet. Gi taket en sjanse.»",
+            "«Du trenger ikke svare raskere enn du klarer å tenke.»",
+            "«Innboksen blir aldri tom. Senga trenger bare én person.»",
+            "«Du har nikket nok til skjermen. Prøv å nikke av i stedet.»",
+            "«Den blinkende markøren kan holde vakt mens du hviler.»",
+            "«Du har produsert nok tastaturlyder for én dag.»",
+            "«Du trenger ikke et nytt dokument. Du trenger et mykt underlag.»",
+            "«Arbeidsdagen har en slutt. Du trenger ikke legge til ekstramateriale.»",
+
+            "«Mandagen har allerede tatt nok fra deg. Ikke gi den resten av kvelden.»",
+            "«Tirsdagen har ingen premier for utholdenhet. Finn et pledd.»",
+            "«Onsdag er halvveis til helg. En lur er en passende rasteplass.»",
+            "«Torsdagen kan vente mens du samler krefter til å kalle den nesten fredag.»",
+            "«Fredagen fortjener en myk landing. Sofaen er klar.»",
+            "«Lørdag morgen er ikke en konkurranse i å komme først ut av senga.»",
+            "«Søndagen har ingen hastverk. Du trenger heller ikke ha det.»",
+            "«Du kan starte helgen uten å stå opp først.»",
+            "«Uka har sju dager. Du trenger ikke bruke alle timene.»",
+            "«Det er alltid en god dag for å undersøke innsiden av øyelokkene.»",
+
+            "«Regnet klarer å treffe vinduet uten at du følger med.»",
+            "«Skyene ser ut som puter. Du kan ta det som et forslag.»",
+            "«Vinden gjør nok arbeid utenfor. Du kan holde deg i ro.»",
+            "«Sola står opp helt av seg selv. Du trenger ikke hjelpe til.»",
+            "«Gråvær og grå joggebukse er et ferdig konsept. Legg til sofa.»",
+            "«Du trenger ikke gå ut for å bekrefte at været finnes.»",
+            "«Det er behagelig under pleddet. Ikke forlat et velfungerende klima.»",
+            "«Værmeldingen har mange symboler, men ingen som krever at du står opp.»",
+            "«Mørket har senket seg. Du kan følge eksemplet.»",
+            "«Det regner kanskje ikke her, men du kan vise solidaritet med et vått sted.»",
+
+            "«Kaffen har fått sin sjanse. Nå kan puta få prøve.»",
+            "«Du trenger ikke brygge enda en kopp for å utsette det åpenbare.»",
+            "«Frokosten er ferdig. Det er lov å ta pause mellom dagens kapitler.»",
+            "«Lunsjen var dagens høydepunkt. La resten foregå i lav høyde.»",
+            "«Tacoen er pakket inn. Nå er det din tur.»",
+            "«Middagen er unnagjort. Sofaen har neste reservasjon.»",
+            "«Teen skal trekke. Du kan trekke deg tilbake.»",
+            "«Du har tygget ferdig. Nå kan du slutte å holde øynene åpne også.»",
+            "«Kjøkkenet har ingen flere oppdrag til deg akkurat nå.»",
+            "«Du trenger ikke dessert når den kalde siden av puta står på menyen.»",
+
+            "«Telefonen din tåler å ligge alene. Prøv å gjøre det samme.»",
+            "«Du har scrollet langt nok. Bunnen finnes ikke, men senga gjør.»",
+            "«Neste video er ikke mer nødvendig enn den forrige.»",
+            "«Du trenger ikke se ferdig internett før du legger deg.»",
+            "«Batteriet på telefonen er snart fullt. Ditt har fortsatt et stykke igjen.»",
+            "«Varslene kan vente. De har allerede funnet ut hvordan de lager lyd.»",
+            "«Du har sett klokka. Nå trenger du ikke sjekke den hvert tredje minutt.»",
+            "«Skjermen slukker når du lar den være. Ta lærdom.»",
+            "«Du trenger ikke holde telefonen med selskap gjennom hele natta.»",
+            "«Det finnes ingen bonus for å være den siste som logger av.»",
+
+            "«Du har gått fra senga til kjøkkenet. Returen kan være dagens siste etappe.»",
+            "«Du fant fjernkontrollen. Nå kan leteaksjonen avsluttes.»",
+            "«Du har tatt av deg skoene. Det er et tydelig signal om å senke ambisjonene.»",
+            "«Du har brettet et plagg. La prestasjonen synke inn på sofaen.»",
+            "«Du har båret deg selv rundt hele dagen. Sett fra deg lasten.»",
+            "«Du trenger ikke stå bare fordi gulvet er tilgjengelig.»",
+            "«Du har åpnet gardinene. Dagen kan ta det videre herfra.»",
+            "«Du har vært ute og hentet posten. Det holder som ekspedisjon.»",
+            "«Du fant en ledig plass på sofaen. Ikke la andre få ideer.»",
+            "«Du har gjort noe i dag. Ingen sa at det måtte bli mer.»",
+
+            "«Drømmen fra i natt sluttet midt i handlingen. Du bør undersøke fortsettelsen.»",
+            "«Du kan ta en liten ferie uten å pakke noe som helst.»",
+            "«Resten av verden kan få prøve seg uten kommentaren din en stund.»",
+            "«Du trenger ikke være tilgjengelig for absolutt alle, inkludert taklampa.»",
+            "«Det er ingen som fører poeng for hvor lenge du sitter oppreist.»",
+            "«Du har lov til å gjøre ingenting uten å gjøre det effektivt.»",
+            "«Du kan la tankene gå en tur uten å bli med.»",
+            "«Dagen trenger ikke en dramatisk avslutning. Et gjesp holder.»",
+            "«Du åpnet en nettside som heter trøtt.no. Du visste nok svaret allerede.»",
+            "«Du har fått et tydelig JA.",
+            
+            /* 
+            "«Jeg er ikke utilgjengelig. Jeg er tilgjengelig igjen etter lading.»",
+            "«Dyna har sendt en møteinnkalling jeg ikke kan avslå.»",
+            "«Jeg har en avtale med puta. Den ble booket lenge før dette.»",
+            "«Sofaen trenger tilsyn, og jeg tar ansvaret på alvor.»",
+            "«Jeg tester om senga fortsatt fungerer som forventet.»",
+            "«Øyelokkene har bedt om redusert åpningstid.»",
+            "«Jeg har gått tom for våkenhet. Ny levering kommer i morgen.»",
+            "«Dette er ikke en lur. Det er en midlertidig systempause.»",
+            "«Jeg har satt meg selv i flymodus.»",
+            "«Pleddet har fanget meg. Situasjonen er foreløpig behagelig.»",
+
+            "«Jeg jobber med et prosjekt som krever lukkede øyne.»",
+            "«Kalenderen min har et ledig felt som passer perfekt til en lur.»",
+            "«Jeg har et internt møte med underbevisstheten.»",
+            "«Dette møtet kunne vært en lur.»",
+            "«Jeg har delegert resten av dagen til morgendagens meg.»",
+            "«Jeg er opptatt med å gjøre ingenting skikkelig.»",
+            "«Dagens viktigste leveranse er et avtrykk i puta.»",
+            "«Jeg har satt en tydelig grense mellom meg og resten av dagen.»",
+            "«Jeg tar en pause fra pausen for å hvile litt.»",
+            "«Jeg har allerede vært oppe. Det får holde som dokumentasjon.»",
+
+            "«Puta har akkurat fått den perfekte temperaturen. Jeg kan ikke kaste bort øyeblikket.»",
+            "«Senga ser ensom ut. Jeg bidrar til bedre selskap.»",
+            "«Dyna og jeg har kommet til enighet om resten av dagen.»",
+            "«Jeg har funnet en god liggestilling og vil ikke risikere å miste den.»",
+            "«Sofaen har reservert plass til meg.»",
+            "«Jeg må undersøke den kalde siden av puta nærmere.»",
+            "«Sengetøyet er rent. Det ville vært uhøflig å ikke møte opp.»",
+            "«Pleddet passer til antrekket mitt. Jeg blir her.»",
+            "«Jeg har lovet madrassen litt kvalitetstid.»",
+            "«Senga er allerede redd opp for dette formålet.»",
+
+            "«Jeg har for mange faner åpne i hodet.»",
+            "«Hjernen viser et lastehjul. Jeg venter til det er ferdig.»",
+            "«Min indre skjerm har gått i hvilemodus.»",
+            "«Jeg installerer stillhet. Dette kan ta litt tid.»",
+            "«Dagens våkenhet er brukt opp. Prøv igjen senere.»",
+            "«Jeg har mistet forbindelsen til tiltakslysten.»",
+            "«Systemet støtter ikke flere gjøremål akkurat nå.»",
+            "«Jeg tar en omstart uten å reise meg.»",
+            "«Jeg har aktivert strømsparing på hele meg.»",
+            "«Varsler er slått av til puta sier noe annet.»",
+
+            "«Det er mandag et sted i følelseslivet mitt.»",
+            "«Tirsdagen kom uten bruksanvisning. Jeg tar en pause.»",
+            "«Onsdag er halvveis til helg og helt fremme ved sofaen.»",
+            "«Jeg øver på å være uthvilt til fredag.»",
+            "«Fredagen fortjener en myk landing.»",
+            "«Lørdagen har ingen innvendinger mot dette.»",
+            "«Søndagen og jeg har samme ambisjonsnivå.»",
+            "«Jeg tar helg fra å holde øynene åpne.»",
+            "«Dette er en generalprøve på neste fridag.»",
+            "«Jeg forlenger helgefølelsen med lukkede øyne.»",
+
+            "«Regnet høres bedre ut fra under dyna.»",
+            "«Sola klarer å skinne uten at jeg følger med.»",
+            "«Skyene ser ut som puter. Jeg tar hintet.»",
+            "«Vinden har nok energi for oss begge.»",
+            "«Været utenfor krever ikke min personlige deltakelse.»",
+            "«Jeg venter på et værvarsel som anbefaler å stå opp.»",
+            "«Det er perfekt temperatur under dette pleddet.»",
+            "«Jeg har valgt innendørsaktiviteter med svært lav aktivitet.»",
+            "«Dagslyset får klare seg med de andre.»",
+            "«Jeg lar været gjøre sitt mens jeg gjør ingenting.»",
+
+            "«Kaffen og jeg har blitt enige om å prøve igjen senere.»",
+            "«Frokosten var dagens store begivenhet. Nå trenger jeg et sceneskifte.»",
+            "«Jeg venter på at middagen skal bli et fjernt minne.»",
+            "«Tacoen er ferdig. Nå er det min tur til å pakkes inn.»",
+            "«Jeg har byttet ut kaffekoppen med en pute.»",
+            "«Lunsjen var god, men sofaen har et bedre ettersmakstilbud.»",
+            "«Oppvasken og jeg trenger litt avstand akkurat nå.»",
+            "«Jeg lar teen trekke og meg selv synke ned i sofaen.»",
+            "«Kjøkkenet er stengt. Hvileavdelingen er åpen.»",
+            "«Jeg har spist ferdig og gått videre til dagens mykeste aktivitet.»",
+
+            "«Jeg har svart på nok spørsmål. Nå svarer jeg med stillhet.»",
+            "«Jeg er på et sted med dårlig dekning og veldig god dyne.»",
+            "«Meldingen din er viktig for meg. Puta er litt viktigere akkurat nå.»",
+            "«Jeg kommer tilbake når ansiktet ikke lenger har putemerker.»",
+            "«Jeg har satt samtalen på vent og hodet på puta.»",
+            "«Jeg kan dessverre ikke komme. Jeg har allerede lagt meg til rette.»",
+            "«Jeg har andre planer. De er myke og rektangulære.»",
+            "«Jeg deltar på avstand, med øynene lukket.»",
+            "«Jeg er ikke borte. Jeg er bare under noe.»",
+            "«Dagens sosiale kapasitet er erstattet av et pledd.»",
+
+            "«Jeg har gått helt fra kjøkkenet til stua. Nå tar jeg en pause.»",
+            "«Jeg fant fjernkontrollen. Dagens leting er over.»",
+            "«Jeg har brettet ett plagg og trenger tid til å bearbeide prestasjonen.»",
+            "«Jeg tok trappa i tankene. Det var nok.»",
+            "«Jeg har flyttet meg fra senga til sofaen. Variasjon er viktig.»",
+            "«Jeg har sett på gjøremålslista. Den så tilbake. Vi tar en pause.»",
+            "«Jeg ryddet plass til meg selv på sofaen. Oppdrag utført.»",
+            "«Jeg har båret dagens forventninger helt hit.»",
+            "«Jeg tok av meg skoene. Nå er det ingen vei tilbake.»",
+            "«Jeg har gjort nok til å kunne si at jeg har gjort noe.»",
+
+            "«Jeg vil være sikker på at drømmen ikke slutter uten meg.»",
+            "«Jeg har et uferdig ærend i drømmeland.»",
+            "«Jeg sjekker om det finnes en mer behagelig versjon av dagen.»",
+            "«Jeg trenger en liten pause mellom nå og etterpå.»",
+            "«Jeg lar tankene gå en tur uten å bli med.»",
+            "«Jeg har valgt dagens enkleste stilling: liggende.»",
+            "«Jeg samler på rolige øyeblikk. Dette ser lovende ut.»",
+            "«Jeg tar en kort ferie uten bagasje.»",
+            "«Jeg følger magefølelsen. Den peker mot sofaen.»",
+            "«Jeg spurte trøtt.no. Svaret var ganske tydelig.»",
+            */
+        ];
+
+        function nyUnnskyldning() {
+            const tilfeldigIndex = Math.floor(Math.random() * unnskyldninger.length);
+            document.getElementById("excuse-text").innerText = unnskyldninger[tilfeldigIndex];
+        }
+
+        oppdaterTidstekst();
+        nyUnnskyldning();
+    </script>
+</body>
+</html>
