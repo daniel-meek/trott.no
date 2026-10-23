@@ -99,6 +99,80 @@
             border-color: #171717;
             background-color: #f5f5f5;
         }
+        /* Tilpass høyden når mobilens adressefelt vises eller skjules. */
+        @media (max-width: 600px), (max-height: 600px) and (pointer: coarse) {
+            body {
+                min-height: 100vh;
+                min-height: 100dvh;
+                padding: clamp(1rem, 4vw, 2rem);
+                gap: 1rem;
+            }
+
+            header,
+            footer {
+                flex-shrink: 0;
+            }
+
+            main {
+                flex: 1 0 auto;
+                width: 100%;
+                min-width: 0;
+                margin: 0;
+                padding: clamp(1.5rem, 5vh, 3rem) 0;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+            }
+
+            .question {
+                font-size: clamp(1.5rem, 7vw, 2.5rem);
+                margin-bottom: 0.75rem;
+            }
+
+            .giant-yes {
+                font-size: clamp(5rem, 25vw, 9rem);
+                margin-bottom: 1rem;
+            }
+
+            .current-time {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .dynamic-sub {
+                font-size: clamp(1.15rem, 5vw, 1.6rem);
+                max-width: 100%;
+                overflow-wrap: break-word;
+            }
+
+            footer {
+                align-items: flex-start;
+                gap: 1rem;
+                padding-top: 1rem;
+            }
+
+            .excuse-wrapper {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .excuse-label {
+                font-size: 0.75rem;
+            }
+
+            .excuse-text {
+                font-size: clamp(1rem, 4vw, 1.25rem);
+                line-height: 1.4;
+                overflow-wrap: break-word;
+            }
+
+            button {
+                min-height: 44px;
+                padding: 0.75rem 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -203,7 +277,8 @@
                 { tid: 700, tekst: "Ukas siste innspurt krever at du ikke sovner stående." },
                 { tid: 800, tekst: "Fredag morgen. Alle andre er også trøtte, så lista ligger lavt i dag." },
                 { tid: 1000, tekst: "Mentalt har du allerede sjekket ut for helgen." },
-                { tid: 1200, tekst: "Fredagslunsj. Herfra og ut går alt i sakte film uansett." },
+                { tid: 1130, tekst: "Fredagslunsj. Herfra og ut går alt i sakte film uansett." },
+                { tid: 1230, tekst: "Fredagskaffen." },
                 { tid: 1400, tekst: "Klokka er to på en fredag. Det er offisielt lov å gi opp produktiviteten." },
                 { tid: 1500, tekst: "Én time til helg. En rask lur nå, så er du i mål." },
                 { tid: 1600, tekst: "Det er fredag ettermiddag. Du har offisielt lov til å kollapse på sofaen." },
@@ -254,8 +329,7 @@
             const timeVal = naa.getHours() * 100 + naa.getMinutes();
 
             const ukedager = [
-                "Søndag", "Mandag", "Tirsdag", "Onsdag",
-                "Torsdag", "Fredag", "Lørdag"
+                "Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"
             ];
             const timer = String(naa.getHours()).padStart(2, "0");
             const minutter = String(naa.getMinutes()).padStart(2, "0");
