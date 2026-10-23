@@ -176,6 +176,20 @@
                 padding: 0.75rem 1rem;
             }
         }
+
+        @media (min-width: 601px) {
+            body {
+                padding-inline: max(
+                    4rem,
+                    calc((100% - 1160px) / 2)
+                );
+            }
+
+            main {
+                max-width: 1160px;
+            }
+        }
+
     </style>
 </head>
 <body>
