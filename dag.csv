@@ -1,105 +1,329 @@
-﻿dag;tid;kommentar
+dag;tid;kommentar
 mandag;0000;Det er midt på natta. Hvorfor er du våken?
+mandag;0005;Fem minutter inn i mandag. Vi foreslår at resten tas med lukkede øyne.
+mandag;0100;Natt til mandag. Puta har holdt av plass til deg, og den tar ikke nattestengt.
+mandag;0200;Klokka er to. Mandag trenger ikke et nattskift med scrolling.
+mandag;0300;Tre om natta på en mandag. Selv sofaen har lagt seg.
+mandag;0333;03:33. Tre treere, ett gjesp og en pute som savner deg.
+mandag;0334;Mandag midt på natta. Tallmagi er over, men senga er fortsatt åpen.
 mandag;0400;Det er alt for tidlig å være våken. Legg deg.
+mandag;0404;404: Mandagenergien ble ikke funnet. Prøv igjen etter litt søvn.
+mandag;0405;Mandag i firetiden. Nattmodus passer best under dyna.
 mandag;0500;Ikke engang fuglene har stått opp på en mandag. Lukk øynene.
 mandag;0600;Alarmen din tar feil. Det er mandag morgen, trykk slumre.
 mandag;0700;Det er mandag klokka sju. Kroppen din er fortsatt i helgemodus.
+mandag;0730;Mandag har startet. Du trenger ikke ta det personlig, men puta tilbyr en pause.
 mandag;0800;Mandag morgen. Kaffen virker ikke uansett, gå og legg deg igjen.
 mandag;0900;Ukens første møte burde vært en e-post. Og du burde vært i senga.
+mandag;0930;Innboksen har tatt helga bedre enn deg. Den er full, du er tom.
+mandag;1000;Formiddag på en mandag. Puta har bedre støtte enn dagens planer.
+mandag;1030;Det er fortsatt mandag. Vi har sjekket to ganger. Sofaen beklager og tilbyr plass.
 mandag;1100;Du har overlevd tre timer av mandagen. Det krever en strekk på sofaen.
+mandag;1111;11:11 på en mandag. Ønsk deg en sofa med ledig plass.
+mandag;1112;Mandag formiddag. Klokka har sluttet å være magisk, men pleddet virker fortsatt.
 mandag;1200;Lunsjtid. Matkomaen kommer snart, like greit å legge seg ned først som sist.
+mandag;1234;12:34. Tallene står på rekke. Du kan godt ligge på langs.
+mandag;1235;Mandag etter lunsj. Dagens neste punkt er å finne en myk sitteplass.
+mandag;1300;Mandag klokka ett. Kaffekoppen er tom, men gjespet har påfyll.
+mandag;1337;Mannen sa l33t! Mandag fikk nettopp et lite bonuspoeng.
+mandag;1338;Mandag etter bonusrunden. Tilbake til vanlig gjesping.
 mandag;1400;Den beryktede mandags-kneika. Ingen merker om du dupper av i 20 minutter.
+mandag;1430;Du har kommet halvveis gjennom mandagen. Resten kan gjerne tas i lavere høyde.
+mandag;1500;Mandag klokka tre. Dagens mest fristende faner er de på sengetøyet.
 mandag;1600;Arbeidsdagen er over, og du brukte opp ukas energi før klokka tolv. Sov litt.
+mandag;1630;Mandag har fått nok skjermtid. Gi den kalde siden av puta litt oppmerksomhet.
+mandag;1700;Mandag ettermiddag. Pleddet ligger klart og stiller ingen spørsmål.
 mandag;1800;Middagshvilen er en undervurdert norsk kulturskatt.
+mandag;1900;Mandag kveld. Fjernkontrollen ligger nærmere enn motivasjonen.
+mandag;1930;Dagens planer har krympet til et pledd. Endelig en realistisk størrelse.
 mandag;2000;Mandag kveld er egentlig bare forlengelsen av en altfor lang morgen.
+mandag;2030;Du trenger ikke forberede hele uka i kveld. Begynn med å finne pysjen.
+mandag;2100;Mandag klokka ni. Neste episode kan vente, puta er allerede klar.
 mandag;2200;Leggetid. Jo fortere du sovner, jo fortere er mandagen over.
+mandag;2222;22:22. Fire toere, null grunn til å starte en ny episode.
+mandag;2223;Mandag kveld. Tallene er vanlige igjen, og senga er like fristende.
 mandag;2300;Du lå og scrollet for lenge. Nå må du sove.
+mandag;2330;Mandag har en halvtime igjen. Du trenger ikke bli til stengetid.
+mandag;2359;Ett minutt igjen av mandag. Du trenger ikke være våken for rulleteksten.
 tirsdag;0000;Det er natt til tirsdag. Ingenting spennende skjer nå uansett.
+tirsdag;0005;Fem minutter inn i tirsdag. Vi foreslår at resten tas med lukkede øyne.
+tirsdag;0100;Natt til tirsdag. Puta har holdt av plass til deg, og den tar ikke nattestengt.
+tirsdag;0200;Klokka er to. Tirsdag trenger ikke et nattskift med scrolling.
+tirsdag;0300;Tre om natta på en tirsdag. Selv sofaen har lagt seg.
+tirsdag;0333;03:33. Tre treere, ett gjesp og en pute som savner deg.
+tirsdag;0334;Tirsdag midt på natta. Tallmagi er over, men senga er fortsatt åpen.
 tirsdag;0400;Klokka er fire på en tirsdag. Dette er definisjonen på umenneskelig.
+tirsdag;0404;404: Tirsdagenergien ble ikke funnet. Prøv igjen etter litt søvn.
+tirsdag;0405;Tirsdag i firetiden. Nattmodus passer best under dyna.
+tirsdag;0500;Tirsdag i femtiden. Dyna har fortsatt mye å tilby.
 tirsdag;0600;Tirsdag er mandagens trøtte lillebror. Unn deg en halvtime til på øyet.
 tirsdag;0700;Du er fortsatt på etterskudd med søvn fra i går.
+tirsdag;0730;Tirsdag morgen. Slumreknappen er den eneste som tilbyr en oppfølgingssamtale du faktisk vil ha.
 tirsdag;0800;Tirsdag morgen. Det er fire dager til helg – spar på kreftene.
 tirsdag;0900;Hjernen din kjører på 12 % kapasitet akkurat nå. Lad batteriene.
+tirsdag;0930;Du har åpnet dokumentet. Vi foreslår en liten pause før dere blir for godt kjent.
+tirsdag;1000;Formiddag på en tirsdag. Puta har bedre støtte enn dagens planer.
+tirsdag;1030;Tirsdag har ingen store avsløringer på lager. Puta kan ta over underholdningen.
 tirsdag;1100;Snart lunsj, men en lur hadde smakt enda bedre.
+tirsdag;1111;11:11 på en tirsdag. Ønsk deg en sofa med ledig plass.
+tirsdag;1112;Tirsdag formiddag. Klokka har sluttet å være magisk, men pleddet virker fortsatt.
 tirsdag;1200;Blodsukkeret stuper. Horisontal stilling er eneste kjente kur.
+tirsdag;1234;12:34. Tallene står på rekke. Du kan godt ligge på langs.
+tirsdag;1235;Tirsdag etter lunsj. Dagens neste punkt er å finne en myk sitteplass.
+tirsdag;1300;Tirsdag klokka ett. Kaffekoppen er tom, men gjespet har påfyll.
+tirsdag;1337;Mannen sa l33t! Tirsdag fikk nettopp et lite bonuspoeng.
+tirsdag;1338;Tirsdag etter bonusrunden. Tilbake til vanlig gjesping.
 tirsdag;1400;To-knekken på en tirsdag treffer hardere enn vanlig. Lukk øynene.
+tirsdag;1430;Kaffekoppen har gjort sitt. Sofaen har bedt om å få prøve.
 tirsdag;1500;Klokka tre på tirsdag er ukas lengste time. Sov deg gjennom den.
 tirsdag;1600;Du har bidratt nok til BNP i dag. Finn nærmeste pute.
+tirsdag;1630;Du er ferdig med dagens tastaturlyder. Neste aktivitet kan godt være lydløs.
+tirsdag;1700;Tirsdag ettermiddag. Pleddet ligger klart og stiller ingen spørsmål.
 tirsdag;1800;En kjapp tirsdagslur på sofaen ødelegger ikke nattesøvnen.
+tirsdag;1900;Tirsdag kveld. Fjernkontrollen ligger nærmere enn motivasjonen.
+tirsdag;1930;Tirsdagskvelden trenger ikke et prosjekt. Et pledd holder fint.
 tirsdag;2000;Det er mørkt, det er tirsdag, og dyna roper på deg.
+tirsdag;2030;Fjernkontrollen spør om du fortsatt ser på. Vi spør om du heller vil legge deg.
+tirsdag;2100;Tirsdag klokka ni. Neste episode kan vente, puta er allerede klar.
 tirsdag;2200;Puss tennene. Verden klarer seg uten deg de neste åtte timene.
+tirsdag;2222;22:22. Fire toere, null grunn til å starte en ny episode.
+tirsdag;2223;Tirsdag kveld. Tallene er vanlige igjen, og senga er like fristende.
 tirsdag;2300;Hvis du legger deg nå, får du akkurat nok søvn til å være trøtt i morgen også.
+tirsdag;2330;Det blir onsdag uten at du følger med. Du kan trygt hoppe over overgangen.
+tirsdag;2359;Ett minutt igjen av tirsdag. Du trenger ikke være våken for rulleteksten.
 onsdag;0000;Midnatt midt i uka. Legg bort telefonen.
+onsdag;0005;Fem minutter inn i onsdag. Vi foreslår at resten tas med lukkede øyne.
+onsdag;0100;Natt til onsdag. Puta har holdt av plass til deg, og den tar ikke nattestengt.
+onsdag;0200;Klokka er to. Onsdag trenger ikke et nattskift med scrolling.
+onsdag;0300;Tre om natta på en onsdag. Selv sofaen har lagt seg.
+onsdag;0333;03:33. Tre treere, ett gjesp og en pute som savner deg.
+onsdag;0334;Onsdag midt på natta. Tallmagi er over, men senga er fortsatt åpen.
 onsdag;0400;Klokka er 04:00. Selv vekkerklokka di synes synd på deg nå.
+onsdag;0404;404: Onsdagenergien ble ikke funnet. Prøv igjen etter litt søvn.
+onsdag;0405;Onsdag i firetiden. Nattmodus passer best under dyna.
+onsdag;0500;Onsdag i femtiden. Dyna har fortsatt mye å tilby.
 onsdag;0600;Halvveis i uka, men 100 % utslitt. Sov litt til.
 onsdag;0700;Onsdag morgen. Kroppen din stemmer for hjemmekontor under dyna.
+onsdag;0730;Onsdag morgen. Halvveis til helg, helt fremme ved slumreknappen.
 onsdag;0800;«Lille lørdag» betyr at man bør starte dagen med lørdagens søvnrutiner.
+onsdag;0900;Onsdag klokka ni. Du er oppe, men øyelokkene har ikke godkjent det.
+onsdag;0930;Lille lørdag har foreløpig veldig stor mandagsenergi. Puta tar imot klager.
 onsdag;1000;Du har stirret på samme skjerm i to timer. Øynene trenger hvilemodus.
+onsdag;1030;Du har sett på klokka tre ganger. Den foreslår fortsatt en pause.
+onsdag;1100;Onsdag før lunsj. En liten pause fra å være vertikal frister.
+onsdag;1111;11:11 på en onsdag. Ønsk deg en sofa med ledig plass.
+onsdag;1112;Onsdag formiddag. Klokka har sluttet å være magisk, men pleddet virker fortsatt.
 onsdag;1200;Halvveis gjennom onsdagen. Feir med en liten strekk.
+onsdag;1234;12:34. Tallene står på rekke. Du kan godt ligge på langs.
+onsdag;1235;Onsdag etter lunsj. Dagens neste punkt er å finne en myk sitteplass.
+onsdag;1300;Onsdag klokka ett. Kaffekoppen er tom, men gjespet har påfyll.
+onsdag;1337;Mannen sa l33t! Onsdag fikk nettopp et lite bonuspoeng.
+onsdag;1338;Onsdag etter bonusrunden. Tilbake til vanlig gjesping.
 onsdag;1400;Onsdag klokka to. Tyngdekraften drar ekstra hardt i øyelokkene nå.
+onsdag;1430;Midt i uka og midt i et gjesp. Vi foreslår at du fullfører det på sofaen.
 onsdag;1500;Det er vitenskapelig bevist at ingenting produktivt skjer etter kl. 15 på en onsdag.
 onsdag;1600;Hjemsreise og sofakollaps står på agendaen.
+onsdag;1630;Onsdag er levert. Du trenger ikke legge ved en aktiv ettermiddag.
 onsdag;1700;Ettermiddagsluren midt i uka er det eneste som holder samfunnet sammen.
+onsdag;1800;Seks på en onsdag. Middagen er en plan, sofakroken er en livsstil.
 onsdag;1900;Du gjespet nettopp, gjorde du ikke? Gå og legg deg.
+onsdag;1930;Lille lørdag, liten ambisjon: Finn et pledd som dekker begge føttene.
+onsdag;2000;Åtte på en onsdag. Pleddet har overtatt møteledelsen.
+onsdag;2030;Dagens siste faner kan lukkes. Øyelokkene har meldt seg frivillig.
 onsdag;2100;Klokka har passert 21. Alt fornuftig du gjør nå kan vente til torsdag.
 onsdag;2200;Senga venter. Ikke la den vente forgjeves.
+onsdag;2222;22:22. Fire toere, null grunn til å starte en ny episode.
+onsdag;2223;Onsdag kveld. Tallene er vanlige igjen, og senga er like fristende.
 onsdag;2300;Nok skjermtid for i dag. God natt.
+onsdag;2330;Onsdag har gjort sitt. Du kan avslutte uten å lese rulleteksten.
+onsdag;2359;Ett minutt igjen av onsdag. Du trenger ikke være våken for rulleteksten.
 torsdag;0000;Det er torsdag. Du har opparbeidet deg et solid søvnunderskudd siden mandag.
+torsdag;0005;Fem minutter inn i torsdag. Vi foreslår at resten tas med lukkede øyne.
+torsdag;0100;Natt til torsdag. Puta har holdt av plass til deg, og den tar ikke nattestengt.
+torsdag;0200;Klokka er to. Torsdag trenger ikke et nattskift med scrolling.
+torsdag;0300;Tre om natta på en torsdag. Selv sofaen har lagt seg.
+torsdag;0333;03:33. Tre treere, ett gjesp og en pute som savner deg.
+torsdag;0334;Torsdag midt på natta. Tallmagi er over, men senga er fortsatt åpen.
 torsdag;0400;Ingen bør se dette klokkeslettet på en torsdag. Sov videre.
+torsdag;0404;404: Torsdagenergien ble ikke funnet. Prøv igjen etter litt søvn.
+torsdag;0405;Torsdag i firetiden. Nattmodus passer best under dyna.
+torsdag;0500;Torsdag i femtiden. Dyna har fortsatt mye å tilby.
 torsdag;0600;Torsdag er dagen der trøttheten fra hele uka samler seg opp.
 torsdag;0700;Bare én dag igjen til fredag, men du kommer deg ikke dit uten mer søvn.
+torsdag;0730;Torsdag morgen. Fredag er nær, men puta er nærmere.
 torsdag;0800;Torsdag morgen. Koffein er bare et dyrt lån av energi – ta en lur i stedet.
+torsdag;0900;Torsdag klokka ni. Du er oppe, men øyelokkene har ikke godkjent det.
+torsdag;0930;Du har snart kommet gjennom uka. Akkurat nå holder det å komme gjennom dette gjespet.
 torsdag;1000;Hodet er tungt, skuldrene er lave, og senga virker uendelig langt unna.
+torsdag;1030;Torsdag later som den er en vanlig arbeidsdag. Sofaen kjenner sannheten.
+torsdag;1100;Torsdag før lunsj. En liten pause fra å være vertikal frister.
+torsdag;1111;11:11 på en torsdag. Ønsk deg en sofa med ledig plass.
+torsdag;1112;Torsdag formiddag. Klokka har sluttet å være magisk, men pleddet virker fortsatt.
 torsdag;1200;Torsdagslunsj etterfulgt av torsdagskoma.
+torsdag;1234;12:34. Tallene står på rekke. Du kan godt ligge på langs.
+torsdag;1235;Torsdag etter lunsj. Dagens neste punkt er å finne en myk sitteplass.
+torsdag;1300;Torsdag klokka ett. Kaffekoppen er tom, men gjespet har påfyll.
+torsdag;1337;Mannen sa l33t! Torsdag fikk nettopp et lite bonuspoeng.
+torsdag;1338;Torsdag etter bonusrunden. Tilbake til vanlig gjesping.
 torsdag;1400;Den berømte to-knekken på en torsdag. Du trenger søvn, ikke viljestyrke.
+torsdag;1430;Du har lest overskriften. Resten av teksten kan få vente mens øynene tar pause.
 torsdag;1500;Du leser samme setning for fjerde gang nå. Ta deg en blund.
 torsdag;1600;Torsdag ettermiddag. Kroppen har allerede tatt helg, følg etter.
+torsdag;1630;Nesten fredag er en god anledning til å øve på helgens liggestilling.
+torsdag;1700;Torsdag ettermiddag. Pleddet ligger klart og stiller ingen spørsmål.
 torsdag;1800;En førti minutters powernap på sofaen nå er helt innafor.
+torsdag;1900;Torsdag kveld. Fjernkontrollen ligger nærmere enn motivasjonen.
+torsdag;1930;Torsdagskvelden har ingen innvendinger mot pysj allerede nå.
 torsdag;2000;Nesten helg. Start oppladningen tidlig.
+torsdag;2030;Fredag trenger ingen nedtelling. Den finner deg selv om du sover.
 torsdag;2100;Hvis du legger deg nå, er det fredag når du våkner!
 torsdag;2200;Pakk deg inn i dyna. Fredagen kommer raskere når du sover.
+torsdag;2222;22:22. Fire toere, null grunn til å starte en ny episode.
+torsdag;2223;Torsdag kveld. Tallene er vanlige igjen, og senga er like fristende.
 torsdag;2300;Seriøst, legg deg. I morgen er det fredag.
+torsdag;2330;En halvtime til fredag. La puta ta seg av lanseringen.
+torsdag;2359;Ett minutt igjen av torsdag. Du trenger ikke være våken for rulleteksten.
 fredag;0000;Det er teknisk sett fredag, men du må fortsatt sove først.
+fredag;0005;Fem minutter inn i fredag. Vi foreslår at resten tas med lukkede øyne.
+fredag;0100;Natt til fredag. Puta har holdt av plass til deg, og den tar ikke nattestengt.
+fredag;0200;Klokka er to. Fredag trenger ikke et nattskift med scrolling.
+fredag;0300;Tre om natta på en fredag. Selv sofaen har lagt seg.
+fredag;0333;03:33. Tre treere, ett gjesp og en pute som savner deg.
+fredag;0334;Fredag midt på natta. Tallmagi er over, men senga er fortsatt åpen.
 fredag;0400;Altfor tidlig, selv for en fredag. Snu deg rundt.
+fredag;0404;404: Fredagenergien ble ikke funnet. Prøv igjen etter litt søvn.
+fredag;0405;Fredag i firetiden. Nattmodus passer best under dyna.
+fredag;0500;Fredag i femtiden. Dyna har fortsatt mye å tilby.
 fredag;0600;Det er fredag morgen. Unn deg femten minutter ekstra.
 fredag;0700;Ukas siste innspurt krever at du ikke sovner stående.
+fredag;0730;Fredag morgen. Helga er på vei, men slumreknappen tilbyr et forsprang.
 fredag;0800;Fredag morgen. Alle andre er også trøtte, så lista ligger lavt i dag.
+fredag;0900;Fredag klokka ni. Du er oppe, men øyelokkene har ikke godkjent det.
+fredag;0930;Du har allerede tenkt på helga. Vi regner det som dagens viktigste planlegging.
 fredag;1000;Mentalt har du allerede sjekket ut for helgen.
-fredag;1200;Fredagslunsj. Herfra og ut går alt i sakte film uansett.
+fredag;1030;Fredag før lunsj. Musepekeren jobber, tankene har funnet sofaen.
+fredag;1100;Fredag før lunsj. En liten pause fra å være vertikal frister.
+fredag;1111;11:11 på en fredag. Ønsk deg en sofa med ledig plass.
+fredag;1112;Fredag formiddag. Klokka har sluttet å være magisk, men pleddet virker fortsatt.
+fredag;1130;Fredagslunsj. Herfra og ut går alt i sakte film uansett.
+fredag;1200;Lunsj på en fredag. Sofaen har allerede reservert bord til etterpå.
+fredag;1230;Fredagskaffen. Koppen er på jobb, men du har allerede tatt helg.
+fredag;1234;12:34. Tallene står på rekke. Du kan godt ligge på langs.
+fredag;1235;Fredag etter lunsj. Dagens neste punkt er å finne en myk sitteplass.
+fredag;1300;Fredag klokka ett. Kaffekoppen er tom, men gjespet har påfyll.
+fredag;1337;Mannen sa l33t! Bra jobba.
+fredag;1338;Fredagskaffen. Koppen er på jobb, men du har allerede tatt helg.
 fredag;1400;Klokka er to på en fredag. Det er offisielt lov å gi opp produktiviteten.
+fredag;1430;Helga nærmer seg. Øyelokkene har begynt å pakke sammen.
 fredag;1500;Én time til helg. En rask lur nå, så er du i mål.
 fredag;1600;Det er fredag ettermiddag. Du har offisielt lov til å kollapse på sofaen.
+fredag;1630;Fredag ettermiddag. Bytt ut kontorstolen med noe som ikke forventer ryggstilling.
+fredag;1700;Fredag ettermiddag. Pleddet ligger klart og stiller ingen spørsmål.
 fredag;1800;Fredagshvilen: Den viktigste overgangen mellom arbeidsuke og helg.
+fredag;1900;Fredag kveld. Fjernkontrollen ligger nærmere enn motivasjonen.
+fredag;1930;Tacoen har fått sin plass. Nå er det din tur til å pakkes inn.
 fredag;2000;Tacoen er spist, og øyelokkene veier bly. Sov på sofaen.
+fredag;2030;Filmen har en handling. Pleddet har et bedre tilbud.
 fredag;2100;Du kommer til å sovne fem minutter ut i filmen uansett.
 fredag;2200;Det er ingen skam å legge seg klokka ti på en fredag.
+fredag;2222;22:22. Fire toere, null grunn til å starte en ny episode.
+fredag;2223;Fredag kveld. Tallene er vanlige igjen, og senga er like fristende.
 fredag;2300;Helga er i gang, og du feirer den best i horisontal tilstand.
+fredag;2330;Du trenger ikke holde deg våken bare fordi det er fredag. Helga blir med til sengs.
+fredag;2359;Ett minutt igjen av fredag. Du trenger ikke være våken for rulleteksten.
 lørdag;0000;Natt til lørdag. Enten er du på vei hjem, eller så burde du sovet for lengst.
+lørdag;0005;Fem minutter inn i lørdag. Vi foreslår at resten tas med lukkede øyne.
+lørdag;0100;Natt til lørdag. Puta har holdt av plass til deg, og den tar ikke nattestengt.
+lørdag;0200;Klokka er to. Lørdag trenger ikke et nattskift med scrolling.
 lørdag;0300;Bestill nattmat, drikk et glass vann og kom deg i seng.
+lørdag;0333;03:33. Tre treere, ett gjesp og en pute som savner deg.
+lørdag;0334;Lørdag midt på natta. Tallmagi er over, men senga er fortsatt åpen.
+lørdag;0404;404: Lørdagenergien ble ikke funnet. Prøv igjen etter litt søvn.
+lørdag;0405;Lørdag i firetiden. Nattmodus passer best under dyna.
+lørdag;0500;Lørdag i femtiden. Dyna har fortsatt mye å tilby.
 lørdag;0600;Hvorfor er du våken klokka seks på en lørdag? Gå og legg deg!
+lørdag;0700;Lørdag morgen. Du og puta var midt i noe.
+lørdag;0730;Lørdag morgen. Alarmen har ingen myndighet her under dyna.
 lørdag;0800;Det er lørdag morgen. Verden åpner ikke før klokka tolv. Sov videre.
 lørdag;0900;Helger er skapt for å ta igjen det tapte. Bli under dyna.
+lørdag;0930;Dagens første plan kan være å snu puta. Vi støtter et oversiktlig program.
 lørdag;1000;Frokosten kan vente. Søvn er ferskvare.
+lørdag;1030;Frokost eller litt mer dyne? Vi er en nettside med et ganske tydelig standpunkt.
+lørdag;1100;Lørdag før lunsj. En liten pause fra å være vertikal frister.
+lørdag;1111;11:11 på en lørdag. Ønsk deg en sofa med ledig plass.
+lørdag;1112;Lørdag formiddag. Klokka har sluttet å være magisk, men pleddet virker fortsatt.
 lørdag;1200;Du har vært våken i et par timer nå. På tide med dagens første lur.
+lørdag;1234;12:34. Tallene står på rekke. Du kan godt ligge på langs.
+lørdag;1235;Lørdag etter lunsj. Dagens neste punkt er å finne en myk sitteplass.
+lørdag;1300;Lørdag klokka ett. Kaffekoppen er tom, men gjespet har påfyll.
+lørdag;1337;Mannen sa l33t! Lørdag fikk nettopp et lite bonuspoeng.
+lørdag;1338;Lørdag etter bonusrunden. Tilbake til vanlig gjesping.
 lørdag;1400;Lørdag ettermiddag er selve gullstandarden for en ettermiddagslur.
+lørdag;1430;Lørdagens gjøremålsliste har ingen rett til å oppta hele sofaen.
+lørdag;1500;Lørdag klokka tre. Dagens mest fristende faner er de på sengetøyet.
 lørdag;1600;Lad opp til lørdagskvelden med en time på øyet.
+lørdag;1630;Du har hele kvelden foran deg. En myk mellomlanding er ikke å kaste den bort.
+lørdag;1700;Lørdag ettermiddag. Pleddet ligger klart og stiller ingen spørsmål.
 lørdag;1800;Ingen planer i kveld? Perfekt, senga er ledig.
+lørdag;1900;Lørdag kveld. Fjernkontrollen ligger nærmere enn motivasjonen.
+lørdag;1930;Lørdag kveld. Pleddet er et fullverdig antrekk for denne anledningen.
 lørdag;2000;Lørdag kveld på sofaen. Pleddet er på, og øynene glir igjen.
+lørdag;2030;Det er ingen kø til den kalde siden av puta. Du kan gå rett inn.
+lørdag;2100;Lørdag klokka ni. Neste episode kan vente, puta er allerede klar.
 lørdag;2200;Kroppen din stemmer for tidlig kveld i kveld.
+lørdag;2222;22:22. Fire toere, null grunn til å starte en ny episode.
+lørdag;2223;Lørdag kveld. Tallene er vanlige igjen, og senga er like fristende.
 lørdag;2300;Nyt at du ikke må sette på alarm til i morgen, og sov godt.
-søndag;0000;Det er søndag. Hele dagen i morgen er dedikert til hvile, start nå.
-søndag;0300;Klokka er tre natt til søndag. Finn senga.
-søndag;0600;Det er forbudt ved norsk lov å stå opp klokka seks på en søndag.
+lørdag;2330;Lørdag er snart ferdig. Søndag begynner like fint med lukkede øyne.
+lørdag;2359;Ett minutt igjen av lørdag. Du trenger ikke være våken for rulleteksten.
+søndag;0000;Midnatt. Det er offisielt søndag, og hviledagen starter i horisontal stilling.
+søndag;0005;Det er søndag. Hele dagen i dag er dedikert til hvile, start nå.
+søndag;0100;Natt til søndag. Uansett hva du holder på med nå, kan det vente til i morgen.
+søndag;0200;Midt på natta. Selv nattuglene har pakket sammen og funnet puta.
+søndag;0258;Klokka er tre natt til søndag. Finn senga.
+søndag;0306;Over klokka tre natt til søndag. Ingenting godt skjer i våken tilstand nå – legg deg.
+søndag;0333;03:33. Halvveis til halv sju. Lukk øynene med en gang.
+søndag;0334;Over klokka tre natt til søndag. Ingenting godt skjer i våken tilstand nå – legg deg.
+søndag;0400;Altfor sent for lørdag, altfor tidlig for søndag. Senga er eneste løsning.
+søndag;0404;404: Våkenhet ikke funnet. Prøv igjen utpå formiddagen.
+søndag;0405;Altfor sent for lørdag, altfor tidlig for søndag. Senga er eneste løsning.
+søndag;0500;Grålysning på en søndag. Fuglene har ikke engang vurdert å stå opp ennå.
+søndag;0558;Det er forbudt ved norsk lov å stå opp klokka seks på en søndag.
+søndag;0608;Søndag i sekstiden. Verden holder stengt, og du har fri. Sov videre.
+søndag;0700;Altfor tidlig på en søndag morgen. Kryp lenger ned under dyna.
+søndag;0730;Søndag morgen. Det mest presserende akkurat nå er å finne en bedre liggestilling.
 søndag;0800;Søndag morgen. Snu puta til den kalde siden og sov to timer til.
 søndag;0900;Det eneste du skal prestere i dag er hvilepuls.
+søndag;0930;Dagens program er fortsatt under dyna. Vi ser ingen grunn til å flytte det.
 søndag;1000;Søndager uten planer er naturens måte å si «bli i senga» på.
+søndag;1030;Søndagsfrokosten kan vare lenge. Pausen etterpå kan vare litt lenger.
+søndag;1100;Sen søndagsfrokost krever alltid en påfølgende strekk på sofaen.
+søndag;1111;11:11. Ønsk deg en lur. Ønsket er herved oppfylt.
+søndag;1112;Sen søndagsfrokost krever alltid en påfølgende strekk på sofaen.
 søndag;1200;Halvveis i søndagen. Har du husket å hvile etter frokost?
+søndag;1234;12:34. Tallene står pent på rekke, men du bør ligge helt flatt.
+søndag;1235;Halvveis i søndagen. Har du husket å hvile etter frokost?
+søndag;1300;Søndagskaffen. Koppen er varm, men sofaen kaller allerede.
+søndag;1337;Mannen sa l33t! Selv på hviledagen.
+søndag;1338;Søndagskaffen. Koppen er varm, men sofaen kaller allerede.
 søndag;1400;Søndagstur? Nei, søndagslur.
+søndag;1430;Søndagstur kan staves med en ekstra l. Vi anbefaler den myke varianten.
 søndag;1500;Det regner sikkert et sted i nærheten. Perfekt sovevær.
-søndag;1600;Søndag klokka fire er den offisielle nasjonale sovetimen på sofaen.
-søndag;1800;Lad opp til ny uke ved å gjøre absolutt ingenting i vannrett posisjon.
+søndag;1558;Søndag klokka fire er den offisielle nasjonale sovetimen på sofaen.
+søndag;1610;Ettermiddagshvilen på søndag er hellig. Finn fram pleddet.
+søndag;1630;Pleddet har lagt frem et forslag til resten av ettermiddagen. Det er enstemmig vedtatt.
+søndag;1700;Søndagsmiddagen nærmer seg. Spar på kreftene med en liten blund først.
+søndag;1745;Matkoma på en søndag kureres kun i vannrett posisjon.
+søndag;1815;Lad opp til ny uke ved å gjøre absolutt ingenting i vannrett posisjon.
 søndag;1900;Søndagsfølelsen kureres best med et teppe og lukkede øyne.
+søndag;1930;Du trenger ikke starte mandagen i hodet allerede nå. Søndag har fortsatt sofaen.
 søndag;2000;I morgen er det mandag. Start forberedelsene med å legge deg tidlig.
-søndag;2100;Klokka er ni på søndag. Jo mer du sover nå, jo mindre trøtt blir mandagen.
+søndag;2030;Morgendagens planer kan ligge i kalenderen. Du kan ligge i senga.
+søndag;2058;Klokka er ni på søndag. Jo mer du sover nå, jo mindre trøtt blir mandagen.
+søndag;2108;Søndag kveld. Ikke start på en ny episode nå – start på nattesøvnen.
 søndag;2200;Puss tenner, sett på alarmen, og få deg en skikkelig natts søvn.
+søndag;2222;22:22. Fire toere på rad betyr dobbel dyne og null skjermtid.
+søndag;2223;Puss tenner, sett på alarmen, og få deg en skikkelig natts søvn.
 søndag;2300;Mandagen lurer rundt hjørnet. Lukk øynene før den ser deg.
+søndag;2330;En halvtime igjen av helga. Den kan godt tilbringes på den kalde siden av puta.
+søndag;2359;Ett minutt til mandag. Sovner du nå, teller det fortsatt som helgesøvn.

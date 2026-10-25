@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="no">
@@ -190,6 +189,28 @@
             }
         }
 
+        /* Stabil tekstplass og tydelig tastaturfokus, uten nytt oppsett. */
+        .excuse-wrapper {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+        .excuse-text {
+            line-height: 1.4;
+            overflow-wrap: break-word;
+        }
+        footer > button {
+            flex-shrink: 0;
+        }
+        button:focus-visible {
+            outline: 2px solid #171717;
+            outline-offset: 4px;
+        }
+        @media (max-width: 600px), (max-height: 600px) and (pointer: coarse) {
+            .excuse-wrapper {
+                flex: 0 0 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -203,7 +224,7 @@
     -->
     
     <main>
-        <div class="question">Bør du sove litt nå?</div>
+        <h1 class="question">Bør du sove litt nå?</h1>
         <div class="giant-yes">JA.</div>
         <div id="current-time" class="current-time"></div>
         <div id="dynamic-text" class="dynamic-sub">
@@ -215,7 +236,7 @@
     <footer>
         <div class="excuse-wrapper">
             <div class="excuse-label">Notat til omverdenen</div>
-            <p id="excuse-text" class="excuse-text"></p>
+            <p id="excuse-text" class="excuse-text" aria-live="polite" aria-atomic="true"></p>
         </div>
         <button onclick="nyUnnskyldning()">Ny unnskyldning →</button>
     </footer>
@@ -223,125 +244,456 @@
     <script>
         const tidstabell = {
             1: [ // Mandag
-                { tid: 0, tekst: "Det er midt på natta. Hvorfor er du våken?" },
-                { tid: 400, tekst: "Det er alt for tidlig å være våken. Legg deg." },
-                { tid: 500, tekst: "Ikke engang fuglene har stått opp på en mandag. Lukk øynene." },
-                { tid: 600, tekst: "Alarmen din tar feil. Det er mandag morgen, trykk slumre." },
-                { tid: 700, tekst: "Det er mandag klokka sju. Kroppen din er fortsatt i helgemodus." },
-                { tid: 800, tekst: "Mandag morgen. Kaffen virker ikke uansett, gå og legg deg igjen." },
-                { tid: 900, tekst: "Ukens første møte burde vært en e-post. Og du burde vært i senga." },
-                { tid: 1100, tekst: "Du har overlevd tre timer av mandagen. Det krever en strekk på sofaen." },
-                { tid: 1200, tekst: "Lunsjtid. Matkomaen kommer snart, like greit å legge seg ned først som sist." },
-                { tid: 1400, tekst: "Den beryktede mandags-kneika. Ingen merker om du dupper av i 20 minutter." },
-                { tid: 1600, tekst: "Arbeidsdagen er over, og du brukte opp ukas energi før klokka tolv. Sov litt." },
-                { tid: 1800, tekst: "Middagshvilen er en undervurdert norsk kulturskatt." },
-                { tid: 2000, tekst: "Mandag kveld er egentlig bare forlengelsen av en altfor lang morgen." },
-                { tid: 2200, tekst: "Leggetid. Jo fortere du sovner, jo fortere er mandagen over." },
-                { tid: 2300, tekst: "Du lå og scrollet for lenge. Nå må du sove." }
+                { tid: 0, tekst: "RGV0IGVyIG1pZHQgcMOlIG5hdHRhLiBIdm9yZm9yIGVyIGR1IHbDpWtlbj8=" },
+                { tid: 5, tekst: "RmVtIG1pbnV0dGVyIGlubiBpIG1hbmRhZy4gVmkgZm9yZXNsw6VyIGF0IHJlc3RlbiB0YXMgbWVkIGx1a2tlZGUgw7h5bmUu" },
+                { tid: 100, tekst: "TmF0dCB0aWwgbWFuZGFnLiBQdXRhIGhhciBob2xkdCBhdiBwbGFzcyB0aWwgZGVnLCBvZyBkZW4gdGFyIGlra2UgbmF0dGVzdGVuZ3Qu" },
+                { tid: 200, tekst: "S2xva2thIGVyIHRvLiBNYW5kYWcgdHJlbmdlciBpa2tlIGV0IG5hdHRza2lmdCBtZWQgc2Nyb2xsaW5nLg==" },
+                { tid: 300, tekst: "VHJlIG9tIG5hdHRhIHDDpSBlbiBtYW5kYWcuIFNlbHYgc29mYWVuIGhhciBsYWd0IHNlZy4=" },
+                { tid: 333, tekst: "MDM6MzMuIFRyZSB0cmVlcmUsIGV0dCBnamVzcCBvZyBlbiBwdXRlIHNvbSBzYXZuZXIgZGVnLg==" },
+                { tid: 334, tekst: "TWFuZGFnIG1pZHQgcMOlIG5hdHRhLiBUYWxsbWFnaSBlciBvdmVyLCBtZW4gc2VuZ2EgZXIgZm9ydHNhdHQgw6VwZW4u" },
+                { tid: 400, tekst: "RGV0IGVyIGFsdCBmb3IgdGlkbGlnIMOlIHbDpnJlIHbDpWtlbi4gTGVnZyBkZWcu" },
+                { tid: 404, tekst: "NDA0OiBNYW5kYWdlbmVyZ2llbiBibGUgaWtrZSBmdW5uZXQuIFByw7h2IGlnamVuIGV0dGVyIGxpdHQgc8O4dm4u" },
+                { tid: 405, tekst: "TWFuZGFnIGkgZmlyZXRpZGVuLiBOYXR0bW9kdXMgcGFzc2VyIGJlc3QgdW5kZXIgZHluYS4=" },
+                { tid: 500, tekst: "SWtrZSBlbmdhbmcgZnVnbGVuZSBoYXIgc3TDpXR0IG9wcCBww6UgZW4gbWFuZGFnLiBMdWtrIMO4eW5lbmUu" },
+                { tid: 600, tekst: "QWxhcm1lbiBkaW4gdGFyIGZlaWwuIERldCBlciBtYW5kYWcgbW9yZ2VuLCB0cnlrayBzbHVtcmUu" },
+                { tid: 700, tekst: "RGV0IGVyIG1hbmRhZyBrbG9ra2Egc2p1LiBLcm9wcGVuIGRpbiBlciBmb3J0c2F0dCBpIGhlbGdlbW9kdXMu" },
+                { tid: 730, tekst: "TWFuZGFnIGhhciBzdGFydGV0LiBEdSB0cmVuZ2VyIGlra2UgdGEgZGV0IHBlcnNvbmxpZywgbWVuIHB1dGEgdGlsYnlyIGVuIHBhdXNlLg==" },
+                { tid: 800, tekst: "TWFuZGFnIG1vcmdlbi4gS2FmZmVuIHZpcmtlciBpa2tlIHVhbnNldHQsIGfDpSBvZyBsZWdnIGRlZyBpZ2plbi4=" },
+                { tid: 900, tekst: "VWtlbnMgZsO4cnN0ZSBtw7h0ZSBidXJkZSB2w6ZydCBlbiBlLXBvc3QuIE9nIGR1IGJ1cmRlIHbDpnJ0IGkgc2VuZ2Eu" },
+                { tid: 930, tekst: "SW5uYm9rc2VuIGhhciB0YXR0IGhlbGdhIGJlZHJlIGVubiBkZWcuIERlbiBlciBmdWxsLCBkdSBlciB0b20u" },
+                { tid: 1000, tekst: "Rm9ybWlkZGFnIHDDpSBlbiBtYW5kYWcuIFB1dGEgaGFyIGJlZHJlIHN0w7h0dGUgZW5uIGRhZ2VucyBwbGFuZXIu" },
+                { tid: 1030, tekst: "RGV0IGVyIGZvcnRzYXR0IG1hbmRhZy4gVmkgaGFyIHNqZWtrZXQgdG8gZ2FuZ2VyLiBTb2ZhZW4gYmVrbGFnZXIgb2cgdGlsYnlyIHBsYXNzLg==" },
+                { tid: 1100, tekst: "RHUgaGFyIG92ZXJsZXZkIHRyZSB0aW1lciBhdiBtYW5kYWdlbi4gRGV0IGtyZXZlciBlbiBzdHJla2sgcMOlIHNvZmFlbi4=" },
+                { tid: 1111, tekst: "MTE6MTEgcMOlIGVuIG1hbmRhZy4gw5huc2sgZGVnIGVuIHNvZmEgbWVkIGxlZGlnIHBsYXNzLg==" },
+                { tid: 1112, tekst: "TWFuZGFnIGZvcm1pZGRhZy4gS2xva2thIGhhciBzbHV0dGV0IMOlIHbDpnJlIG1hZ2lzaywgbWVuIHBsZWRkZXQgdmlya2VyIGZvcnRzYXR0Lg==" },
+                { tid: 1200, tekst: "THVuc2p0aWQuIE1hdGtvbWFlbiBrb21tZXIgc25hcnQsIGxpa2UgZ3JlaXQgw6UgbGVnZ2Ugc2VnIG5lZCBmw7hyc3Qgc29tIHNpc3Qu" },
+                { tid: 1234, tekst: "MTI6MzQuIFRhbGxlbmUgc3TDpXIgcMOlIHJla2tlLiBEdSBrYW4gZ29kdCBsaWdnZSBww6UgbGFuZ3Mu" },
+                { tid: 1235, tekst: "TWFuZGFnIGV0dGVyIGx1bnNqLiBEYWdlbnMgbmVzdGUgcHVua3QgZXIgw6UgZmlubmUgZW4gbXlrIHNpdHRlcGxhc3Mu" },
+                { tid: 1300, tekst: "TWFuZGFnIGtsb2trYSBldHQuIEthZmZla29wcGVuIGVyIHRvbSwgbWVuIGdqZXNwZXQgaGFyIHDDpWZ5bGwu" },
+                { tid: 1337, tekst: "TWFubmVuIHNhIGwzM3QhIE1hbmRhZyBmaWtrIG5ldHRvcHAgZXQgbGl0ZSBib251c3BvZW5nLg==" },
+                { tid: 1338, tekst: "TWFuZGFnIGV0dGVyIGJvbnVzcnVuZGVuLiBUaWxiYWtlIHRpbCB2YW5saWcgZ2plc3Bpbmcu" },
+                { tid: 1400, tekst: "RGVuIGJlcnlrdGVkZSBtYW5kYWdzLWtuZWlrYS4gSW5nZW4gbWVya2VyIG9tIGR1IGR1cHBlciBhdiBpIDIwIG1pbnV0dGVyLg==" },
+                { tid: 1430, tekst: "RHUgaGFyIGtvbW1ldCBoYWx2dmVpcyBnamVubm9tIG1hbmRhZ2VuLiBSZXN0ZW4ga2FuIGdqZXJuZSB0YXMgaSBsYXZlcmUgaMO4eWRlLg==" },
+                { tid: 1500, tekst: "TWFuZGFnIGtsb2trYSB0cmUuIERhZ2VucyBtZXN0IGZyaXN0ZW5kZSBmYW5lciBlciBkZSBww6Ugc2VuZ2V0w7h5ZXQu" },
+                { tid: 1600, tekst: "QXJiZWlkc2RhZ2VuIGVyIG92ZXIsIG9nIGR1IGJydWt0ZSBvcHAgdWthcyBlbmVyZ2kgZsO4ciBrbG9ra2EgdG9sdi4gU292IGxpdHQu" },
+                { tid: 1630, tekst: "TWFuZGFnIGhhciBmw6V0dCBub2sgc2tqZXJtdGlkLiBHaSBkZW4ga2FsZGUgc2lkZW4gYXYgcHV0YSBsaXR0IG9wcG1lcmtzb21oZXQu" },
+                { tid: 1700, tekst: "TWFuZGFnIGV0dGVybWlkZGFnLiBQbGVkZGV0IGxpZ2dlciBrbGFydCBvZyBzdGlsbGVyIGluZ2VuIHNww7hyc23DpWwu" },
+                { tid: 1800, tekst: "TWlkZGFnc2h2aWxlbiBlciBlbiB1bmRlcnZ1cmRlcnQgbm9yc2sga3VsdHVyc2thdHQu" },
+                { tid: 1900, tekst: "TWFuZGFnIGt2ZWxkLiBGamVybmtvbnRyb2xsZW4gbGlnZ2VyIG7DpnJtZXJlIGVubiBtb3RpdmFzam9uZW4u" },
+                { tid: 1930, tekst: "RGFnZW5zIHBsYW5lciBoYXIga3J5bXBldCB0aWwgZXQgcGxlZGQuIEVuZGVsaWcgZW4gcmVhbGlzdGlzayBzdMO4cnJlbHNlLg==" },
+                { tid: 2000, tekst: "TWFuZGFnIGt2ZWxkIGVyIGVnZW50bGlnIGJhcmUgZm9ybGVuZ2Vsc2VuIGF2IGVuIGFsdGZvciBsYW5nIG1vcmdlbi4=" },
+                { tid: 2030, tekst: "RHUgdHJlbmdlciBpa2tlIGZvcmJlcmVkZSBoZWxlIHVrYSBpIGt2ZWxkLiBCZWd5bm4gbWVkIMOlIGZpbm5lIHB5c2plbi4=" },
+                { tid: 2100, tekst: "TWFuZGFnIGtsb2trYSBuaS4gTmVzdGUgZXBpc29kZSBrYW4gdmVudGUsIHB1dGEgZXIgYWxsZXJlZGUga2xhci4=" },
+                { tid: 2200, tekst: "TGVnZ2V0aWQuIEpvIGZvcnRlcmUgZHUgc292bmVyLCBqbyBmb3J0ZXJlIGVyIG1hbmRhZ2VuIG92ZXIu" },
+                { tid: 2222, tekst: "MjI6MjIuIEZpcmUgdG9lcmUsIG51bGwgZ3J1bm4gdGlsIMOlIHN0YXJ0ZSBlbiBueSBlcGlzb2RlLg==" },
+                { tid: 2223, tekst: "TWFuZGFnIGt2ZWxkLiBUYWxsZW5lIGVyIHZhbmxpZ2UgaWdqZW4sIG9nIHNlbmdhIGVyIGxpa2UgZnJpc3RlbmRlLg==" },
+                { tid: 2300, tekst: "RHUgbMOlIG9nIHNjcm9sbGV0IGZvciBsZW5nZS4gTsOlIG3DpSBkdSBzb3ZlLg==" },
+                { tid: 2330, tekst: "TWFuZGFnIGhhciBlbiBoYWx2dGltZSBpZ2plbi4gRHUgdHJlbmdlciBpa2tlIGJsaSB0aWwgc3RlbmdldGlkLg==" },
+                { tid: 2359, tekst: "RXR0IG1pbnV0dCBpZ2plbiBhdiBtYW5kYWcuIER1IHRyZW5nZXIgaWtrZSB2w6ZyZSB2w6VrZW4gZm9yIHJ1bGxldGVrc3Rlbi4=" },
             ],
             2: [ // Tirsdag
-                { tid: 0, tekst: "Det er natt til tirsdag. Ingenting spennende skjer nå uansett." },
-                { tid: 400, tekst: "Klokka er fire på en tirsdag. Dette er definisjonen på umenneskelig." },
-                { tid: 600, tekst: "Tirsdag er mandagens trøtte lillebror. Unn deg en halvtime til på øyet." },
-                { tid: 700, tekst: "Du er fortsatt på etterskudd med søvn fra i går." },
-                { tid: 800, tekst: "Tirsdag morgen. Det er fire dager til helg – spar på kreftene." },
-                { tid: 900, tekst: "Hjernen din kjører på 12 % kapasitet akkurat nå. Lad batteriene." },
-                { tid: 1100, tekst: "Snart lunsj, men en lur hadde smakt enda bedre." },
-                { tid: 1200, tekst: "Blodsukkeret stuper. Horisontal stilling er eneste kjente kur." },
-                { tid: 1400, tekst: "To-knekken på en tirsdag treffer hardere enn vanlig. Lukk øynene." },
-                { tid: 1500, tekst: "Klokka tre på tirsdag er ukas lengste time. Sov deg gjennom den." },
-                { tid: 1600, tekst: "Du har bidratt nok til BNP i dag. Finn nærmeste pute." },
-                { tid: 1800, tekst: "En kjapp tirsdagslur på sofaen ødelegger ikke nattesøvnen." },
-                { tid: 2000, tekst: "Det er mørkt, det er tirsdag, og dyna roper på deg." },
-                { tid: 2200, tekst: "Puss tennene. Verden klarer seg uten deg de neste åtte timene." },
-                { tid: 2300, tekst: "Hvis du legger deg nå, får du akkurat nok søvn til å være trøtt i morgen også." }
+                { tid: 0, tekst: "RGV0IGVyIG5hdHQgdGlsIHRpcnNkYWcuIEluZ2VudGluZyBzcGVubmVuZGUgc2tqZXIgbsOlIHVhbnNldHQu" },
+                { tid: 5, tekst: "RmVtIG1pbnV0dGVyIGlubiBpIHRpcnNkYWcuIFZpIGZvcmVzbMOlciBhdCByZXN0ZW4gdGFzIG1lZCBsdWtrZWRlIMO4eW5lLg==" },
+                { tid: 100, tekst: "TmF0dCB0aWwgdGlyc2RhZy4gUHV0YSBoYXIgaG9sZHQgYXYgcGxhc3MgdGlsIGRlZywgb2cgZGVuIHRhciBpa2tlIG5hdHRlc3Rlbmd0Lg==" },
+                { tid: 200, tekst: "S2xva2thIGVyIHRvLiBUaXJzZGFnIHRyZW5nZXIgaWtrZSBldCBuYXR0c2tpZnQgbWVkIHNjcm9sbGluZy4=" },
+                { tid: 300, tekst: "VHJlIG9tIG5hdHRhIHDDpSBlbiB0aXJzZGFnLiBTZWx2IHNvZmFlbiBoYXIgbGFndCBzZWcu" },
+                { tid: 333, tekst: "MDM6MzMuIFRyZSB0cmVlcmUsIGV0dCBnamVzcCBvZyBlbiBwdXRlIHNvbSBzYXZuZXIgZGVnLg==" },
+                { tid: 334, tekst: "VGlyc2RhZyBtaWR0IHDDpSBuYXR0YS4gVGFsbG1hZ2kgZXIgb3ZlciwgbWVuIHNlbmdhIGVyIGZvcnRzYXR0IMOlcGVuLg==" },
+                { tid: 400, tekst: "S2xva2thIGVyIGZpcmUgcMOlIGVuIHRpcnNkYWcuIERldHRlIGVyIGRlZmluaXNqb25lbiBww6UgdW1lbm5lc2tlbGlnLg==" },
+                { tid: 404, tekst: "NDA0OiBUaXJzZGFnZW5lcmdpZW4gYmxlIGlra2UgZnVubmV0LiBQcsO4diBpZ2plbiBldHRlciBsaXR0IHPDuHZuLg==" },
+                { tid: 405, tekst: "VGlyc2RhZyBpIGZpcmV0aWRlbi4gTmF0dG1vZHVzIHBhc3NlciBiZXN0IHVuZGVyIGR5bmEu" },
+                { tid: 500, tekst: "VGlyc2RhZyBpIGZlbXRpZGVuLiBEeW5hIGhhciBmb3J0c2F0dCBteWUgw6UgdGlsYnku" },
+                { tid: 600, tekst: "VGlyc2RhZyBlciBtYW5kYWdlbnMgdHLDuHR0ZSBsaWxsZWJyb3IuIFVubiBkZWcgZW4gaGFsdnRpbWUgdGlsIHDDpSDDuHlldC4=" },
+                { tid: 700, tekst: "RHUgZXIgZm9ydHNhdHQgcMOlIGV0dGVyc2t1ZGQgbWVkIHPDuHZuIGZyYSBpIGfDpXIu" },
+                { tid: 730, tekst: "VGlyc2RhZyBtb3JnZW4uIFNsdW1yZWtuYXBwZW4gZXIgZGVuIGVuZXN0ZSBzb20gdGlsYnlyIGVuIG9wcGbDuGxnaW5nc3NhbXRhbGUgZHUgZmFrdGlzayB2aWwgaGEu" },
+                { tid: 800, tekst: "VGlyc2RhZyBtb3JnZW4uIERldCBlciBmaXJlIGRhZ2VyIHRpbCBoZWxnIOKAkyBzcGFyIHDDpSBrcmVmdGVuZS4=" },
+                { tid: 900, tekst: "SGplcm5lbiBkaW4ga2rDuHJlciBww6UgMTIgJSBrYXBhc2l0ZXQgYWtrdXJhdCBuw6UuIExhZCBiYXR0ZXJpZW5lLg==" },
+                { tid: 930, tekst: "RHUgaGFyIMOlcG5ldCBkb2t1bWVudGV0LiBWaSBmb3Jlc2zDpXIgZW4gbGl0ZW4gcGF1c2UgZsO4ciBkZXJlIGJsaXIgZm9yIGdvZHQga2plbnQu" },
+                { tid: 1000, tekst: "Rm9ybWlkZGFnIHDDpSBlbiB0aXJzZGFnLiBQdXRhIGhhciBiZWRyZSBzdMO4dHRlIGVubiBkYWdlbnMgcGxhbmVyLg==" },
+                { tid: 1030, tekst: "VGlyc2RhZyBoYXIgaW5nZW4gc3RvcmUgYXZzbMO4cmluZ2VyIHDDpSBsYWdlci4gUHV0YSBrYW4gdGEgb3ZlciB1bmRlcmhvbGRuaW5nZW4u" },
+                { tid: 1100, tekst: "U25hcnQgbHVuc2osIG1lbiBlbiBsdXIgaGFkZGUgc21ha3QgZW5kYSBiZWRyZS4=" },
+                { tid: 1111, tekst: "MTE6MTEgcMOlIGVuIHRpcnNkYWcuIMOYbnNrIGRlZyBlbiBzb2ZhIG1lZCBsZWRpZyBwbGFzcy4=" },
+                { tid: 1112, tekst: "VGlyc2RhZyBmb3JtaWRkYWcuIEtsb2trYSBoYXIgc2x1dHRldCDDpSB2w6ZyZSBtYWdpc2ssIG1lbiBwbGVkZGV0IHZpcmtlciBmb3J0c2F0dC4=" },
+                { tid: 1200, tekst: "QmxvZHN1a2tlcmV0IHN0dXBlci4gSG9yaXNvbnRhbCBzdGlsbGluZyBlciBlbmVzdGUga2plbnRlIGt1ci4=" },
+                { tid: 1234, tekst: "MTI6MzQuIFRhbGxlbmUgc3TDpXIgcMOlIHJla2tlLiBEdSBrYW4gZ29kdCBsaWdnZSBww6UgbGFuZ3Mu" },
+                { tid: 1235, tekst: "VGlyc2RhZyBldHRlciBsdW5zai4gRGFnZW5zIG5lc3RlIHB1bmt0IGVyIMOlIGZpbm5lIGVuIG15ayBzaXR0ZXBsYXNzLg==" },
+                { tid: 1300, tekst: "VGlyc2RhZyBrbG9ra2EgZXR0LiBLYWZmZWtvcHBlbiBlciB0b20sIG1lbiBnamVzcGV0IGhhciBww6VmeWxsLg==" },
+                { tid: 1337, tekst: "TWFubmVuIHNhIGwzM3QhIFRpcnNkYWcgZmlrayBuZXR0b3BwIGV0IGxpdGUgYm9udXNwb2VuZy4=" },
+                { tid: 1338, tekst: "VGlyc2RhZyBldHRlciBib251c3J1bmRlbi4gVGlsYmFrZSB0aWwgdmFubGlnIGdqZXNwaW5nLg==" },
+                { tid: 1400, tekst: "VG8ta25la2tlbiBww6UgZW4gdGlyc2RhZyB0cmVmZmVyIGhhcmRlcmUgZW5uIHZhbmxpZy4gTHVrayDDuHluZW5lLg==" },
+                { tid: 1430, tekst: "S2FmZmVrb3BwZW4gaGFyIGdqb3J0IHNpdHQuIFNvZmFlbiBoYXIgYmVkdCBvbSDDpSBmw6UgcHLDuHZlLg==" },
+                { tid: 1500, tekst: "S2xva2thIHRyZSBww6UgdGlyc2RhZyBlciB1a2FzIGxlbmdzdGUgdGltZS4gU292IGRlZyBnamVubm9tIGRlbi4=" },
+                { tid: 1600, tekst: "RHUgaGFyIGJpZHJhdHQgbm9rIHRpbCBCTlAgaSBkYWcuIEZpbm4gbsOmcm1lc3RlIHB1dGUu" },
+                { tid: 1630, tekst: "RHUgZXIgZmVyZGlnIG1lZCBkYWdlbnMgdGFzdGF0dXJseWRlci4gTmVzdGUgYWt0aXZpdGV0IGthbiBnb2R0IHbDpnJlIGx5ZGzDuHMu" },
+                { tid: 1700, tekst: "VGlyc2RhZyBldHRlcm1pZGRhZy4gUGxlZGRldCBsaWdnZXIga2xhcnQgb2cgc3RpbGxlciBpbmdlbiBzcMO4cnNtw6VsLg==" },
+                { tid: 1800, tekst: "RW4ga2phcHAgdGlyc2RhZ3NsdXIgcMOlIHNvZmFlbiDDuGRlbGVnZ2VyIGlra2UgbmF0dGVzw7h2bmVuLg==" },
+                { tid: 1900, tekst: "VGlyc2RhZyBrdmVsZC4gRmplcm5rb250cm9sbGVuIGxpZ2dlciBuw6ZybWVyZSBlbm4gbW90aXZhc2pvbmVuLg==" },
+                { tid: 1930, tekst: "VGlyc2RhZ3NrdmVsZGVuIHRyZW5nZXIgaWtrZSBldCBwcm9zamVrdC4gRXQgcGxlZGQgaG9sZGVyIGZpbnQu" },
+                { tid: 2000, tekst: "RGV0IGVyIG3DuHJrdCwgZGV0IGVyIHRpcnNkYWcsIG9nIGR5bmEgcm9wZXIgcMOlIGRlZy4=" },
+                { tid: 2030, tekst: "Rmplcm5rb250cm9sbGVuIHNww7hyIG9tIGR1IGZvcnRzYXR0IHNlciBww6UuIFZpIHNww7hyIG9tIGR1IGhlbGxlciB2aWwgbGVnZ2UgZGVnLg==" },
+                { tid: 2100, tekst: "VGlyc2RhZyBrbG9ra2EgbmkuIE5lc3RlIGVwaXNvZGUga2FuIHZlbnRlLCBwdXRhIGVyIGFsbGVyZWRlIGtsYXIu" },
+                { tid: 2200, tekst: "UHVzcyB0ZW5uZW5lLiBWZXJkZW4ga2xhcmVyIHNlZyB1dGVuIGRlZyBkZSBuZXN0ZSDDpXR0ZSB0aW1lbmUu" },
+                { tid: 2222, tekst: "MjI6MjIuIEZpcmUgdG9lcmUsIG51bGwgZ3J1bm4gdGlsIMOlIHN0YXJ0ZSBlbiBueSBlcGlzb2RlLg==" },
+                { tid: 2223, tekst: "VGlyc2RhZyBrdmVsZC4gVGFsbGVuZSBlciB2YW5saWdlIGlnamVuLCBvZyBzZW5nYSBlciBsaWtlIGZyaXN0ZW5kZS4=" },
+                { tid: 2300, tekst: "SHZpcyBkdSBsZWdnZXIgZGVnIG7DpSwgZsOlciBkdSBha2t1cmF0IG5vayBzw7h2biB0aWwgw6UgdsOmcmUgdHLDuHR0IGkgbW9yZ2VuIG9nc8OlLg==" },
+                { tid: 2330, tekst: "RGV0IGJsaXIgb25zZGFnIHV0ZW4gYXQgZHUgZsO4bGdlciBtZWQuIER1IGthbiB0cnlndCBob3BwZSBvdmVyIG92ZXJnYW5nZW4u" },
+                { tid: 2359, tekst: "RXR0IG1pbnV0dCBpZ2plbiBhdiB0aXJzZGFnLiBEdSB0cmVuZ2VyIGlra2UgdsOmcmUgdsOla2VuIGZvciBydWxsZXRla3N0ZW4u" },
             ],
             3: [ // Onsdag
-                { tid: 0, tekst: "Midnatt midt i uka. Legg bort telefonen." },
-                { tid: 400, tekst: "Klokka er 04:00. Selv vekkerklokka di synes synd på deg nå." },
-                { tid: 600, tekst: "Halvveis i uka, men 100 % utslitt. Sov litt til." },
-                { tid: 700, tekst: "Onsdag morgen. Kroppen din stemmer for hjemmekontor under dyna." },
-                { tid: 800, tekst: "«Lille lørdag» betyr at man bør starte dagen med lørdagens søvnrutiner." },
-                { tid: 1000, tekst: "Du har stirret på samme skjerm i to timer. Øynene trenger hvilemodus." },
-                { tid: 1200, tekst: "Halvveis gjennom onsdagen. Feir med en liten strekk." },
-                { tid: 1400, tekst: "Onsdag klokka to. Tyngdekraften drar ekstra hardt i øyelokkene nå." },
-                { tid: 1500, tekst: "Det er vitenskapelig bevist at ingenting produktivt skjer etter kl. 15 på en onsdag." },
-                { tid: 1600, tekst: "Hjemsreise og sofakollaps står på agendaen." },
-                { tid: 1700, tekst: "Ettermiddagsluren midt i uka er det eneste som holder samfunnet sammen." },
-                { tid: 1900, tekst: "Du gjespet nettopp, gjorde du ikke? Gå og legg deg." },
-                { tid: 2100, tekst: "Klokka har passert 21. Alt fornuftig du gjør nå kan vente til torsdag." },
-                { tid: 2200, tekst: "Senga venter. Ikke la den vente forgjeves." },
-                { tid: 2300, tekst: "Nok skjermtid for i dag. God natt." }
+                { tid: 0, tekst: "TWlkbmF0dCBtaWR0IGkgdWthLiBMZWdnIGJvcnQgdGVsZWZvbmVuLg==" },
+                { tid: 5, tekst: "RmVtIG1pbnV0dGVyIGlubiBpIG9uc2RhZy4gVmkgZm9yZXNsw6VyIGF0IHJlc3RlbiB0YXMgbWVkIGx1a2tlZGUgw7h5bmUu" },
+                { tid: 100, tekst: "TmF0dCB0aWwgb25zZGFnLiBQdXRhIGhhciBob2xkdCBhdiBwbGFzcyB0aWwgZGVnLCBvZyBkZW4gdGFyIGlra2UgbmF0dGVzdGVuZ3Qu" },
+                { tid: 200, tekst: "S2xva2thIGVyIHRvLiBPbnNkYWcgdHJlbmdlciBpa2tlIGV0IG5hdHRza2lmdCBtZWQgc2Nyb2xsaW5nLg==" },
+                { tid: 300, tekst: "VHJlIG9tIG5hdHRhIHDDpSBlbiBvbnNkYWcuIFNlbHYgc29mYWVuIGhhciBsYWd0IHNlZy4=" },
+                { tid: 333, tekst: "MDM6MzMuIFRyZSB0cmVlcmUsIGV0dCBnamVzcCBvZyBlbiBwdXRlIHNvbSBzYXZuZXIgZGVnLg==" },
+                { tid: 334, tekst: "T25zZGFnIG1pZHQgcMOlIG5hdHRhLiBUYWxsbWFnaSBlciBvdmVyLCBtZW4gc2VuZ2EgZXIgZm9ydHNhdHQgw6VwZW4u" },
+                { tid: 400, tekst: "S2xva2thIGVyIDA0OjAwLiBTZWx2IHZla2tlcmtsb2trYSBkaSBzeW5lcyBzeW5kIHDDpSBkZWcgbsOlLg==" },
+                { tid: 404, tekst: "NDA0OiBPbnNkYWdlbmVyZ2llbiBibGUgaWtrZSBmdW5uZXQuIFByw7h2IGlnamVuIGV0dGVyIGxpdHQgc8O4dm4u" },
+                { tid: 405, tekst: "T25zZGFnIGkgZmlyZXRpZGVuLiBOYXR0bW9kdXMgcGFzc2VyIGJlc3QgdW5kZXIgZHluYS4=" },
+                { tid: 500, tekst: "T25zZGFnIGkgZmVtdGlkZW4uIER5bmEgaGFyIGZvcnRzYXR0IG15ZSDDpSB0aWxieS4=" },
+                { tid: 600, tekst: "SGFsdnZlaXMgaSB1a2EsIG1lbiAxMDAgJSB1dHNsaXR0LiBTb3YgbGl0dCB0aWwu" },
+                { tid: 700, tekst: "T25zZGFnIG1vcmdlbi4gS3JvcHBlbiBkaW4gc3RlbW1lciBmb3IgaGplbW1la29udG9yIHVuZGVyIGR5bmEu" },
+                { tid: 730, tekst: "T25zZGFnIG1vcmdlbi4gSGFsdnZlaXMgdGlsIGhlbGcsIGhlbHQgZnJlbW1lIHZlZCBzbHVtcmVrbmFwcGVuLg==" },
+                { tid: 800, tekst: "wqtMaWxsZSBsw7hyZGFnwrsgYmV0eXIgYXQgbWFuIGLDuHIgc3RhcnRlIGRhZ2VuIG1lZCBsw7hyZGFnZW5zIHPDuHZucnV0aW5lci4=" },
+                { tid: 900, tekst: "T25zZGFnIGtsb2trYSBuaS4gRHUgZXIgb3BwZSwgbWVuIMO4eWVsb2trZW5lIGhhciBpa2tlIGdvZGtqZW50IGRldC4=" },
+                { tid: 930, tekst: "TGlsbGUgbMO4cmRhZyBoYXIgZm9yZWzDuHBpZyB2ZWxkaWcgc3RvciBtYW5kYWdzZW5lcmdpLiBQdXRhIHRhciBpbW90IGtsYWdlci4=" },
+                { tid: 1000, tekst: "RHUgaGFyIHN0aXJyZXQgcMOlIHNhbW1lIHNramVybSBpIHRvIHRpbWVyLiDDmHluZW5lIHRyZW5nZXIgaHZpbGVtb2R1cy4=" },
+                { tid: 1030, tekst: "RHUgaGFyIHNldHQgcMOlIGtsb2trYSB0cmUgZ2FuZ2VyLiBEZW4gZm9yZXNsw6VyIGZvcnRzYXR0IGVuIHBhdXNlLg==" },
+                { tid: 1100, tekst: "T25zZGFnIGbDuHIgbHVuc2ouIEVuIGxpdGVuIHBhdXNlIGZyYSDDpSB2w6ZyZSB2ZXJ0aWthbCBmcmlzdGVyLg==" },
+                { tid: 1111, tekst: "MTE6MTEgcMOlIGVuIG9uc2RhZy4gw5huc2sgZGVnIGVuIHNvZmEgbWVkIGxlZGlnIHBsYXNzLg==" },
+                { tid: 1112, tekst: "T25zZGFnIGZvcm1pZGRhZy4gS2xva2thIGhhciBzbHV0dGV0IMOlIHbDpnJlIG1hZ2lzaywgbWVuIHBsZWRkZXQgdmlya2VyIGZvcnRzYXR0Lg==" },
+                { tid: 1200, tekst: "SGFsdnZlaXMgZ2plbm5vbSBvbnNkYWdlbi4gRmVpciBtZWQgZW4gbGl0ZW4gc3RyZWtrLg==" },
+                { tid: 1234, tekst: "MTI6MzQuIFRhbGxlbmUgc3TDpXIgcMOlIHJla2tlLiBEdSBrYW4gZ29kdCBsaWdnZSBww6UgbGFuZ3Mu" },
+                { tid: 1235, tekst: "T25zZGFnIGV0dGVyIGx1bnNqLiBEYWdlbnMgbmVzdGUgcHVua3QgZXIgw6UgZmlubmUgZW4gbXlrIHNpdHRlcGxhc3Mu" },
+                { tid: 1300, tekst: "T25zZGFnIGtsb2trYSBldHQuIEthZmZla29wcGVuIGVyIHRvbSwgbWVuIGdqZXNwZXQgaGFyIHDDpWZ5bGwu" },
+                { tid: 1337, tekst: "TWFubmVuIHNhIGwzM3QhIE9uc2RhZyBmaWtrIG5ldHRvcHAgZXQgbGl0ZSBib251c3BvZW5nLg==" },
+                { tid: 1338, tekst: "T25zZGFnIGV0dGVyIGJvbnVzcnVuZGVuLiBUaWxiYWtlIHRpbCB2YW5saWcgZ2plc3Bpbmcu" },
+                { tid: 1400, tekst: "T25zZGFnIGtsb2trYSB0by4gVHluZ2Rla3JhZnRlbiBkcmFyIGVrc3RyYSBoYXJkdCBpIMO4eWVsb2trZW5lIG7DpS4=" },
+                { tid: 1430, tekst: "TWlkdCBpIHVrYSBvZyBtaWR0IGkgZXQgZ2plc3AuIFZpIGZvcmVzbMOlciBhdCBkdSBmdWxsZsO4cmVyIGRldCBww6Ugc29mYWVuLg==" },
+                { tid: 1500, tekst: "RGV0IGVyIHZpdGVuc2thcGVsaWcgYmV2aXN0IGF0IGluZ2VudGluZyBwcm9kdWt0aXZ0IHNramVyIGV0dGVyIGtsLiAxNSBww6UgZW4gb25zZGFnLg==" },
+                { tid: 1600, tekst: "SGplbXNyZWlzZSBvZyBzb2Zha29sbGFwcyBzdMOlciBww6UgYWdlbmRhZW4u" },
+                { tid: 1630, tekst: "T25zZGFnIGVyIGxldmVydC4gRHUgdHJlbmdlciBpa2tlIGxlZ2dlIHZlZCBlbiBha3RpdiBldHRlcm1pZGRhZy4=" },
+                { tid: 1700, tekst: "RXR0ZXJtaWRkYWdzbHVyZW4gbWlkdCBpIHVrYSBlciBkZXQgZW5lc3RlIHNvbSBob2xkZXIgc2FtZnVubmV0IHNhbW1lbi4=" },
+                { tid: 1800, tekst: "U2VrcyBww6UgZW4gb25zZGFnLiBNaWRkYWdlbiBlciBlbiBwbGFuLCBzb2Zha3Jva2VuIGVyIGVuIGxpdnNzdGlsLg==" },
+                { tid: 1900, tekst: "RHUgZ2plc3BldCBuZXR0b3BwLCBnam9yZGUgZHUgaWtrZT8gR8OlIG9nIGxlZ2cgZGVnLg==" },
+                { tid: 1930, tekst: "TGlsbGUgbMO4cmRhZywgbGl0ZW4gYW1iaXNqb246IEZpbm4gZXQgcGxlZGQgc29tIGRla2tlciBiZWdnZSBmw7h0dGVuZS4=" },
+                { tid: 2000, tekst: "w4V0dGUgcMOlIGVuIG9uc2RhZy4gUGxlZGRldCBoYXIgb3ZlcnRhdHQgbcO4dGVsZWRlbHNlbi4=" },
+                { tid: 2030, tekst: "RGFnZW5zIHNpc3RlIGZhbmVyIGthbiBsdWtrZXMuIMOYeWVsb2trZW5lIGhhciBtZWxkdCBzZWcgZnJpdmlsbGlnLg==" },
+                { tid: 2100, tekst: "S2xva2thIGhhciBwYXNzZXJ0IDIxLiBBbHQgZm9ybnVmdGlnIGR1IGdqw7hyIG7DpSBrYW4gdmVudGUgdGlsIHRvcnNkYWcu" },
+                { tid: 2200, tekst: "U2VuZ2EgdmVudGVyLiBJa2tlIGxhIGRlbiB2ZW50ZSBmb3JnamV2ZXMu" },
+                { tid: 2222, tekst: "MjI6MjIuIEZpcmUgdG9lcmUsIG51bGwgZ3J1bm4gdGlsIMOlIHN0YXJ0ZSBlbiBueSBlcGlzb2RlLg==" },
+                { tid: 2223, tekst: "T25zZGFnIGt2ZWxkLiBUYWxsZW5lIGVyIHZhbmxpZ2UgaWdqZW4sIG9nIHNlbmdhIGVyIGxpa2UgZnJpc3RlbmRlLg==" },
+                { tid: 2300, tekst: "Tm9rIHNramVybXRpZCBmb3IgaSBkYWcuIEdvZCBuYXR0Lg==" },
+                { tid: 2330, tekst: "T25zZGFnIGhhciBnam9ydCBzaXR0LiBEdSBrYW4gYXZzbHV0dGUgdXRlbiDDpSBsZXNlIHJ1bGxldGVrc3Rlbi4=" },
+                { tid: 2359, tekst: "RXR0IG1pbnV0dCBpZ2plbiBhdiBvbnNkYWcuIER1IHRyZW5nZXIgaWtrZSB2w6ZyZSB2w6VrZW4gZm9yIHJ1bGxldGVrc3Rlbi4=" },
             ],
             4: [ // Torsdag
-                { tid: 0, tekst: "Det er torsdag. Du har opparbeidet deg et solid søvnunderskudd siden mandag." },
-                { tid: 400, tekst: "Ingen bør se dette klokkeslettet på en torsdag. Sov videre." },
-                { tid: 600, tekst: "Torsdag er dagen der trøttheten fra hele uka samler seg opp." },
-                { tid: 700, tekst: "Bare én dag igjen til fredag, men du kommer deg ikke dit uten mer søvn." },
-                { tid: 800, tekst: "Torsdag morgen. Koffein er bare et dyrt lån av energi – ta en lur i stedet." },
-                { tid: 1000, tekst: "Hodet er tungt, skuldrene er lave, og senga virker uendelig langt unna." },
-                { tid: 1200, tekst: "Torsdagslunsj etterfulgt av torsdagskoma." },
-                { tid: 1400, tekst: "Den berømte to-knekken på en torsdag. Du trenger søvn, ikke viljestyrke." },
-                { tid: 1500, tekst: "Du leser samme setning for fjerde gang nå. Ta deg en blund." },
-                { tid: 1600, tekst: "Torsdag ettermiddag. Kroppen har allerede tatt helg, følg etter." },
-                { tid: 1800, tekst: "En førti minutters powernap på sofaen nå er helt innafor." },
-                { tid: 2000, tekst: "Nesten helg. Start oppladningen tidlig." },
-                { tid: 2100, tekst: "Hvis du legger deg nå, er det fredag når du våkner!" },
-                { tid: 2200, tekst: "Pakk deg inn i dyna. Fredagen kommer raskere når du sover." },
-                { tid: 2300, tekst: "Seriøst, legg deg. I morgen er det fredag." }
+                { tid: 0, tekst: "RGV0IGVyIHRvcnNkYWcuIER1IGhhciBvcHBhcmJlaWRldCBkZWcgZXQgc29saWQgc8O4dm51bmRlcnNrdWRkIHNpZGVuIG1hbmRhZy4=" },
+                { tid: 5, tekst: "RmVtIG1pbnV0dGVyIGlubiBpIHRvcnNkYWcuIFZpIGZvcmVzbMOlciBhdCByZXN0ZW4gdGFzIG1lZCBsdWtrZWRlIMO4eW5lLg==" },
+                { tid: 100, tekst: "TmF0dCB0aWwgdG9yc2RhZy4gUHV0YSBoYXIgaG9sZHQgYXYgcGxhc3MgdGlsIGRlZywgb2cgZGVuIHRhciBpa2tlIG5hdHRlc3Rlbmd0Lg==" },
+                { tid: 200, tekst: "S2xva2thIGVyIHRvLiBUb3JzZGFnIHRyZW5nZXIgaWtrZSBldCBuYXR0c2tpZnQgbWVkIHNjcm9sbGluZy4=" },
+                { tid: 300, tekst: "VHJlIG9tIG5hdHRhIHDDpSBlbiB0b3JzZGFnLiBTZWx2IHNvZmFlbiBoYXIgbGFndCBzZWcu" },
+                { tid: 333, tekst: "MDM6MzMuIFRyZSB0cmVlcmUsIGV0dCBnamVzcCBvZyBlbiBwdXRlIHNvbSBzYXZuZXIgZGVnLg==" },
+                { tid: 334, tekst: "VG9yc2RhZyBtaWR0IHDDpSBuYXR0YS4gVGFsbG1hZ2kgZXIgb3ZlciwgbWVuIHNlbmdhIGVyIGZvcnRzYXR0IMOlcGVuLg==" },
+                { tid: 400, tekst: "SW5nZW4gYsO4ciBzZSBkZXR0ZSBrbG9ra2VzbGV0dGV0IHDDpSBlbiB0b3JzZGFnLiBTb3YgdmlkZXJlLg==" },
+                { tid: 404, tekst: "NDA0OiBUb3JzZGFnZW5lcmdpZW4gYmxlIGlra2UgZnVubmV0LiBQcsO4diBpZ2plbiBldHRlciBsaXR0IHPDuHZuLg==" },
+                { tid: 405, tekst: "VG9yc2RhZyBpIGZpcmV0aWRlbi4gTmF0dG1vZHVzIHBhc3NlciBiZXN0IHVuZGVyIGR5bmEu" },
+                { tid: 500, tekst: "VG9yc2RhZyBpIGZlbXRpZGVuLiBEeW5hIGhhciBmb3J0c2F0dCBteWUgw6UgdGlsYnku" },
+                { tid: 600, tekst: "VG9yc2RhZyBlciBkYWdlbiBkZXIgdHLDuHR0aGV0ZW4gZnJhIGhlbGUgdWthIHNhbWxlciBzZWcgb3BwLg==" },
+                { tid: 700, tekst: "QmFyZSDDqW4gZGFnIGlnamVuIHRpbCBmcmVkYWcsIG1lbiBkdSBrb21tZXIgZGVnIGlra2UgZGl0IHV0ZW4gbWVyIHPDuHZuLg==" },
+                { tid: 730, tekst: "VG9yc2RhZyBtb3JnZW4uIEZyZWRhZyBlciBuw6ZyLCBtZW4gcHV0YSBlciBuw6ZybWVyZS4=" },
+                { tid: 800, tekst: "VG9yc2RhZyBtb3JnZW4uIEtvZmZlaW4gZXIgYmFyZSBldCBkeXJ0IGzDpW4gYXYgZW5lcmdpIOKAkyB0YSBlbiBsdXIgaSBzdGVkZXQu" },
+                { tid: 900, tekst: "VG9yc2RhZyBrbG9ra2EgbmkuIER1IGVyIG9wcGUsIG1lbiDDuHllbG9ra2VuZSBoYXIgaWtrZSBnb2RramVudCBkZXQu" },
+                { tid: 930, tekst: "RHUgaGFyIHNuYXJ0IGtvbW1ldCBnamVubm9tIHVrYS4gQWtrdXJhdCBuw6UgaG9sZGVyIGRldCDDpSBrb21tZSBnamVubm9tIGRldHRlIGdqZXNwZXQu" },
+                { tid: 1000, tekst: "SG9kZXQgZXIgdHVuZ3QsIHNrdWxkcmVuZSBlciBsYXZlLCBvZyBzZW5nYSB2aXJrZXIgdWVuZGVsaWcgbGFuZ3QgdW5uYS4=" },
+                { tid: 1030, tekst: "VG9yc2RhZyBsYXRlciBzb20gZGVuIGVyIGVuIHZhbmxpZyBhcmJlaWRzZGFnLiBTb2ZhZW4ga2plbm5lciBzYW5uaGV0ZW4u" },
+                { tid: 1100, tekst: "VG9yc2RhZyBmw7hyIGx1bnNqLiBFbiBsaXRlbiBwYXVzZSBmcmEgw6UgdsOmcmUgdmVydGlrYWwgZnJpc3Rlci4=" },
+                { tid: 1111, tekst: "MTE6MTEgcMOlIGVuIHRvcnNkYWcuIMOYbnNrIGRlZyBlbiBzb2ZhIG1lZCBsZWRpZyBwbGFzcy4=" },
+                { tid: 1112, tekst: "VG9yc2RhZyBmb3JtaWRkYWcuIEtsb2trYSBoYXIgc2x1dHRldCDDpSB2w6ZyZSBtYWdpc2ssIG1lbiBwbGVkZGV0IHZpcmtlciBmb3J0c2F0dC4=" },
+                { tid: 1200, tekst: "VG9yc2RhZ3NsdW5zaiBldHRlcmZ1bGd0IGF2IHRvcnNkYWdza29tYS4=" },
+                { tid: 1234, tekst: "MTI6MzQuIFRhbGxlbmUgc3TDpXIgcMOlIHJla2tlLiBEdSBrYW4gZ29kdCBsaWdnZSBww6UgbGFuZ3Mu" },
+                { tid: 1235, tekst: "VG9yc2RhZyBldHRlciBsdW5zai4gRGFnZW5zIG5lc3RlIHB1bmt0IGVyIMOlIGZpbm5lIGVuIG15ayBzaXR0ZXBsYXNzLg==" },
+                { tid: 1300, tekst: "VG9yc2RhZyBrbG9ra2EgZXR0LiBLYWZmZWtvcHBlbiBlciB0b20sIG1lbiBnamVzcGV0IGhhciBww6VmeWxsLg==" },
+                { tid: 1337, tekst: "TWFubmVuIHNhIGwzM3QhIFRvcnNkYWcgZmlrayBuZXR0b3BwIGV0IGxpdGUgYm9udXNwb2VuZy4=" },
+                { tid: 1338, tekst: "VG9yc2RhZyBldHRlciBib251c3J1bmRlbi4gVGlsYmFrZSB0aWwgdmFubGlnIGdqZXNwaW5nLg==" },
+                { tid: 1400, tekst: "RGVuIGJlcsO4bXRlIHRvLWtuZWtrZW4gcMOlIGVuIHRvcnNkYWcuIER1IHRyZW5nZXIgc8O4dm4sIGlra2UgdmlsamVzdHlya2Uu" },
+                { tid: 1430, tekst: "RHUgaGFyIGxlc3Qgb3ZlcnNrcmlmdGVuLiBSZXN0ZW4gYXYgdGVrc3RlbiBrYW4gZsOlIHZlbnRlIG1lbnMgw7h5bmVuZSB0YXIgcGF1c2Uu" },
+                { tid: 1500, tekst: "RHUgbGVzZXIgc2FtbWUgc2V0bmluZyBmb3IgZmplcmRlIGdhbmcgbsOlLiBUYSBkZWcgZW4gYmx1bmQu" },
+                { tid: 1600, tekst: "VG9yc2RhZyBldHRlcm1pZGRhZy4gS3JvcHBlbiBoYXIgYWxsZXJlZGUgdGF0dCBoZWxnLCBmw7hsZyBldHRlci4=" },
+                { tid: 1630, tekst: "TmVzdGVuIGZyZWRhZyBlciBlbiBnb2QgYW5sZWRuaW5nIHRpbCDDpSDDuHZlIHDDpSBoZWxnZW5zIGxpZ2dlc3RpbGxpbmcu" },
+                { tid: 1700, tekst: "VG9yc2RhZyBldHRlcm1pZGRhZy4gUGxlZGRldCBsaWdnZXIga2xhcnQgb2cgc3RpbGxlciBpbmdlbiBzcMO4cnNtw6VsLg==" },
+                { tid: 1800, tekst: "RW4gZsO4cnRpIG1pbnV0dGVycyBwb3dlcm5hcCBww6Ugc29mYWVuIG7DpSBlciBoZWx0IGlubmFmb3Iu" },
+                { tid: 1900, tekst: "VG9yc2RhZyBrdmVsZC4gRmplcm5rb250cm9sbGVuIGxpZ2dlciBuw6ZybWVyZSBlbm4gbW90aXZhc2pvbmVuLg==" },
+                { tid: 1930, tekst: "VG9yc2RhZ3NrdmVsZGVuIGhhciBpbmdlbiBpbm52ZW5kaW5nZXIgbW90IHB5c2ogYWxsZXJlZGUgbsOlLg==" },
+                { tid: 2000, tekst: "TmVzdGVuIGhlbGcuIFN0YXJ0IG9wcGxhZG5pbmdlbiB0aWRsaWcu" },
+                { tid: 2030, tekst: "RnJlZGFnIHRyZW5nZXIgaW5nZW4gbmVkdGVsbGluZy4gRGVuIGZpbm5lciBkZWcgc2VsdiBvbSBkdSBzb3Zlci4=" },
+                { tid: 2100, tekst: "SHZpcyBkdSBsZWdnZXIgZGVnIG7DpSwgZXIgZGV0IGZyZWRhZyBuw6VyIGR1IHbDpWtuZXIh" },
+                { tid: 2200, tekst: "UGFrayBkZWcgaW5uIGkgZHluYS4gRnJlZGFnZW4ga29tbWVyIHJhc2tlcmUgbsOlciBkdSBzb3Zlci4=" },
+                { tid: 2222, tekst: "MjI6MjIuIEZpcmUgdG9lcmUsIG51bGwgZ3J1bm4gdGlsIMOlIHN0YXJ0ZSBlbiBueSBlcGlzb2RlLg==" },
+                { tid: 2223, tekst: "VG9yc2RhZyBrdmVsZC4gVGFsbGVuZSBlciB2YW5saWdlIGlnamVuLCBvZyBzZW5nYSBlciBsaWtlIGZyaXN0ZW5kZS4=" },
+                { tid: 2300, tekst: "U2VyacO4c3QsIGxlZ2cgZGVnLiBJIG1vcmdlbiBlciBkZXQgZnJlZGFnLg==" },
+                { tid: 2330, tekst: "RW4gaGFsdnRpbWUgdGlsIGZyZWRhZy4gTGEgcHV0YSB0YSBzZWcgYXYgbGFuc2VyaW5nZW4u" },
+                { tid: 2359, tekst: "RXR0IG1pbnV0dCBpZ2plbiBhdiB0b3JzZGFnLiBEdSB0cmVuZ2VyIGlra2UgdsOmcmUgdsOla2VuIGZvciBydWxsZXRla3N0ZW4u" },
             ],
             5: [ // Fredag
-                { tid: 0, tekst: "Det er teknisk sett fredag, men du må fortsatt sove først." },
-                { tid: 400, tekst: "Altfor tidlig, selv for en fredag. Snu deg rundt." },
-                { tid: 600, tekst: "Det er fredag morgen. Unn deg femten minutter ekstra." },
-                { tid: 700, tekst: "Ukas siste innspurt krever at du ikke sovner stående." },
-                { tid: 800, tekst: "Fredag morgen. Alle andre er også trøtte, så lista ligger lavt i dag." },
-                { tid: 1000, tekst: "Mentalt har du allerede sjekket ut for helgen." },
-                { tid: 1130, tekst: "Fredagslunsj. Herfra og ut går alt i sakte film uansett." },
-                { tid: 1230, tekst: "Fredagskaffen. Koppen er på jobb, men du har allerede tatt helg." },                
-                { tid: 1400, tekst: "Klokka er to på en fredag. Det er offisielt lov å gi opp produktiviteten." },
-                { tid: 1500, tekst: "Én time til helg. En rask lur nå, så er du i mål." },
-                { tid: 1600, tekst: "Det er fredag ettermiddag. Du har offisielt lov til å kollapse på sofaen." },
-                { tid: 1800, tekst: "Fredagshvilen: Den viktigste overgangen mellom arbeidsuke og helg." },
-                { tid: 2000, tekst: "Tacoen er spist, og øyelokkene veier bly. Sov på sofaen." },
-                { tid: 2100, tekst: "Du kommer til å sovne fem minutter ut i filmen uansett." },
-                { tid: 2200, tekst: "Det er ingen skam å legge seg klokka ti på en fredag." },
-                { tid: 2300, tekst: "Helga er i gang, og du feirer den best i horisontal tilstand." }
+                { tid: 0, tekst: "RGV0IGVyIHRla25pc2sgc2V0dCBmcmVkYWcsIG1lbiBkdSBtw6UgZm9ydHNhdHQgc292ZSBmw7hyc3Qu" },
+                { tid: 5, tekst: "RmVtIG1pbnV0dGVyIGlubiBpIGZyZWRhZy4gVmkgZm9yZXNsw6VyIGF0IHJlc3RlbiB0YXMgbWVkIGx1a2tlZGUgw7h5bmUu" },
+                { tid: 100, tekst: "TmF0dCB0aWwgZnJlZGFnLiBQdXRhIGhhciBob2xkdCBhdiBwbGFzcyB0aWwgZGVnLCBvZyBkZW4gdGFyIGlra2UgbmF0dGVzdGVuZ3Qu" },
+                { tid: 200, tekst: "S2xva2thIGVyIHRvLiBGcmVkYWcgdHJlbmdlciBpa2tlIGV0IG5hdHRza2lmdCBtZWQgc2Nyb2xsaW5nLg==" },
+                { tid: 300, tekst: "VHJlIG9tIG5hdHRhIHDDpSBlbiBmcmVkYWcuIFNlbHYgc29mYWVuIGhhciBsYWd0IHNlZy4=" },
+                { tid: 333, tekst: "MDM6MzMuIFRyZSB0cmVlcmUsIGV0dCBnamVzcCBvZyBlbiBwdXRlIHNvbSBzYXZuZXIgZGVnLg==" },
+                { tid: 334, tekst: "RnJlZGFnIG1pZHQgcMOlIG5hdHRhLiBUYWxsbWFnaSBlciBvdmVyLCBtZW4gc2VuZ2EgZXIgZm9ydHNhdHQgw6VwZW4u" },
+                { tid: 400, tekst: "QWx0Zm9yIHRpZGxpZywgc2VsdiBmb3IgZW4gZnJlZGFnLiBTbnUgZGVnIHJ1bmR0Lg==" },
+                { tid: 404, tekst: "NDA0OiBGcmVkYWdlbmVyZ2llbiBibGUgaWtrZSBmdW5uZXQuIFByw7h2IGlnamVuIGV0dGVyIGxpdHQgc8O4dm4u" },
+                { tid: 405, tekst: "RnJlZGFnIGkgZmlyZXRpZGVuLiBOYXR0bW9kdXMgcGFzc2VyIGJlc3QgdW5kZXIgZHluYS4=" },
+                { tid: 500, tekst: "RnJlZGFnIGkgZmVtdGlkZW4uIER5bmEgaGFyIGZvcnRzYXR0IG15ZSDDpSB0aWxieS4=" },
+                { tid: 600, tekst: "RGV0IGVyIGZyZWRhZyBtb3JnZW4uIFVubiBkZWcgZmVtdGVuIG1pbnV0dGVyIGVrc3RyYS4=" },
+                { tid: 700, tekst: "VWthcyBzaXN0ZSBpbm5zcHVydCBrcmV2ZXIgYXQgZHUgaWtrZSBzb3ZuZXIgc3TDpWVuZGUu" },
+                { tid: 730, tekst: "RnJlZGFnIG1vcmdlbi4gSGVsZ2EgZXIgcMOlIHZlaSwgbWVuIHNsdW1yZWtuYXBwZW4gdGlsYnlyIGV0IGZvcnNwcmFuZy4=" },
+                { tid: 800, tekst: "RnJlZGFnIG1vcmdlbi4gQWxsZSBhbmRyZSBlciBvZ3PDpSB0csO4dHRlLCBzw6UgbGlzdGEgbGlnZ2VyIGxhdnQgaSBkYWcu" },
+                { tid: 900, tekst: "RnJlZGFnIGtsb2trYSBuaS4gRHUgZXIgb3BwZSwgbWVuIMO4eWVsb2trZW5lIGhhciBpa2tlIGdvZGtqZW50IGRldC4=" },
+                { tid: 930, tekst: "RHUgaGFyIGFsbGVyZWRlIHRlbmt0IHDDpSBoZWxnYS4gVmkgcmVnbmVyIGRldCBzb20gZGFnZW5zIHZpa3RpZ3N0ZSBwbGFubGVnZ2luZy4=" },
+                { tid: 1000, tekst: "TWVudGFsdCBoYXIgZHUgYWxsZXJlZGUgc2pla2tldCB1dCBmb3IgaGVsZ2VuLg==" },
+                { tid: 1030, tekst: "RnJlZGFnIGbDuHIgbHVuc2ouIE11c2VwZWtlcmVuIGpvYmJlciwgdGFua2VuZSBoYXIgZnVubmV0IHNvZmFlbi4=" },
+                { tid: 1100, tekst: "RnJlZGFnIGbDuHIgbHVuc2ouIEVuIGxpdGVuIHBhdXNlIGZyYSDDpSB2w6ZyZSB2ZXJ0aWthbCBmcmlzdGVyLg==" },
+                { tid: 1111, tekst: "MTE6MTEgcMOlIGVuIGZyZWRhZy4gw5huc2sgZGVnIGVuIHNvZmEgbWVkIGxlZGlnIHBsYXNzLg==" },
+                { tid: 1112, tekst: "RnJlZGFnIGZvcm1pZGRhZy4gS2xva2thIGhhciBzbHV0dGV0IMOlIHbDpnJlIG1hZ2lzaywgbWVuIHBsZWRkZXQgdmlya2VyIGZvcnRzYXR0Lg==" },
+                { tid: 1130, tekst: "RnJlZGFnc2x1bnNqLiBIZXJmcmEgb2cgdXQgZ8OlciBhbHQgaSBzYWt0ZSBmaWxtIHVhbnNldHQu" },
+                { tid: 1200, tekst: "THVuc2ogcMOlIGVuIGZyZWRhZy4gU29mYWVuIGhhciBhbGxlcmVkZSByZXNlcnZlcnQgYm9yZCB0aWwgZXR0ZXJww6Uu" },
+                { tid: 1230, tekst: "RnJlZGFnc2thZmZlbi4gS29wcGVuIGVyIHDDpSBqb2JiLCBtZW4gZHUgaGFyIGFsbGVyZWRlIHRhdHQgaGVsZy4=" },
+                { tid: 1234, tekst: "MTI6MzQuIFRhbGxlbmUgc3TDpXIgcMOlIHJla2tlLiBEdSBrYW4gZ29kdCBsaWdnZSBww6UgbGFuZ3Mu" },
+                { tid: 1235, tekst: "RnJlZGFnIGV0dGVyIGx1bnNqLiBEYWdlbnMgbmVzdGUgcHVua3QgZXIgw6UgZmlubmUgZW4gbXlrIHNpdHRlcGxhc3Mu" },
+                { tid: 1300, tekst: "RnJlZGFnIGtsb2trYSBldHQuIEthZmZla29wcGVuIGVyIHRvbSwgbWVuIGdqZXNwZXQgaGFyIHDDpWZ5bGwu" },
+                { tid: 1337, tekst: "TWFubmVuIHNhIGwzM3QhIEJyYSBqb2JiYS4=" },
+                { tid: 1338, tekst: "RnJlZGFnc2thZmZlbi4gS29wcGVuIGVyIHDDpSBqb2JiLCBtZW4gZHUgaGFyIGFsbGVyZWRlIHRhdHQgaGVsZy4=" },
+                { tid: 1400, tekst: "S2xva2thIGVyIHRvIHDDpSBlbiBmcmVkYWcuIERldCBlciBvZmZpc2llbHQgbG92IMOlIGdpIG9wcCBwcm9kdWt0aXZpdGV0ZW4u" },
+                { tid: 1430, tekst: "SGVsZ2EgbsOmcm1lciBzZWcuIMOYeWVsb2trZW5lIGhhciBiZWd5bnQgw6UgcGFra2Ugc2FtbWVuLg==" },
+                { tid: 1500, tekst: "w4luIHRpbWUgdGlsIGhlbGcuIEVuIHJhc2sgbHVyIG7DpSwgc8OlIGVyIGR1IGkgbcOlbC4=" },
+                { tid: 1600, tekst: "RGV0IGVyIGZyZWRhZyBldHRlcm1pZGRhZy4gRHUgaGFyIG9mZmlzaWVsdCBsb3YgdGlsIMOlIGtvbGxhcHNlIHDDpSBzb2ZhZW4u" },
+                { tid: 1630, tekst: "RnJlZGFnIGV0dGVybWlkZGFnLiBCeXR0IHV0IGtvbnRvcnN0b2xlbiBtZWQgbm9lIHNvbSBpa2tlIGZvcnZlbnRlciByeWdnc3RpbGxpbmcu" },
+                { tid: 1700, tekst: "RnJlZGFnIGV0dGVybWlkZGFnLiBQbGVkZGV0IGxpZ2dlciBrbGFydCBvZyBzdGlsbGVyIGluZ2VuIHNww7hyc23DpWwu" },
+                { tid: 1800, tekst: "RnJlZGFnc2h2aWxlbjogRGVuIHZpa3RpZ3N0ZSBvdmVyZ2FuZ2VuIG1lbGxvbSBhcmJlaWRzdWtlIG9nIGhlbGcu" },
+                { tid: 1900, tekst: "RnJlZGFnIGt2ZWxkLiBGamVybmtvbnRyb2xsZW4gbGlnZ2VyIG7DpnJtZXJlIGVubiBtb3RpdmFzam9uZW4u" },
+                { tid: 1930, tekst: "VGFjb2VuIGhhciBmw6V0dCBzaW4gcGxhc3MuIE7DpSBlciBkZXQgZGluIHR1ciB0aWwgw6UgcGFra2VzIGlubi4=" },
+                { tid: 2000, tekst: "VGFjb2VuIGVyIHNwaXN0LCBvZyDDuHllbG9ra2VuZSB2ZWllciBibHkuIFNvdiBww6Ugc29mYWVuLg==" },
+                { tid: 2030, tekst: "RmlsbWVuIGhhciBlbiBoYW5kbGluZy4gUGxlZGRldCBoYXIgZXQgYmVkcmUgdGlsYnVkLg==" },
+                { tid: 2100, tekst: "RHUga29tbWVyIHRpbCDDpSBzb3ZuZSBmZW0gbWludXR0ZXIgdXQgaSBmaWxtZW4gdWFuc2V0dC4=" },
+                { tid: 2200, tekst: "RGV0IGVyIGluZ2VuIHNrYW0gw6UgbGVnZ2Ugc2VnIGtsb2trYSB0aSBww6UgZW4gZnJlZGFnLg==" },
+                { tid: 2222, tekst: "MjI6MjIuIEZpcmUgdG9lcmUsIG51bGwgZ3J1bm4gdGlsIMOlIHN0YXJ0ZSBlbiBueSBlcGlzb2RlLg==" },
+                { tid: 2223, tekst: "RnJlZGFnIGt2ZWxkLiBUYWxsZW5lIGVyIHZhbmxpZ2UgaWdqZW4sIG9nIHNlbmdhIGVyIGxpa2UgZnJpc3RlbmRlLg==" },
+                { tid: 2300, tekst: "SGVsZ2EgZXIgaSBnYW5nLCBvZyBkdSBmZWlyZXIgZGVuIGJlc3QgaSBob3Jpc29udGFsIHRpbHN0YW5kLg==" },
+                { tid: 2330, tekst: "RHUgdHJlbmdlciBpa2tlIGhvbGRlIGRlZyB2w6VrZW4gYmFyZSBmb3JkaSBkZXQgZXIgZnJlZGFnLiBIZWxnYSBibGlyIG1lZCB0aWwgc2VuZ3Mu" },
+                { tid: 2359, tekst: "RXR0IG1pbnV0dCBpZ2plbiBhdiBmcmVkYWcuIER1IHRyZW5nZXIgaWtrZSB2w6ZyZSB2w6VrZW4gZm9yIHJ1bGxldGVrc3Rlbi4=" },
             ],
             6: [ // Lørdag
-                { tid: 0, tekst: "Natt til lørdag. Enten er du på vei hjem, eller så burde du sovet for lengst." },
-                { tid: 300, tekst: "Bestill nattmat, drikk et glass vann og kom deg i seng." },
-                { tid: 600, tekst: "Hvorfor er du våken klokka seks på en lørdag? Gå og legg deg!" },
-                { tid: 800, tekst: "Det er lørdag morgen. Verden åpner ikke før klokka tolv. Sov videre." },
-                { tid: 900, tekst: "Helger er skapt for å ta igjen det tapte. Bli under dyna." },
-                { tid: 1000, tekst: "Frokosten kan vente. Søvn er ferskvare." },
-                { tid: 1200, tekst: "Du har vært våken i et par timer nå. På tide med dagens første lur." },
-                { tid: 1400, tekst: "Lørdag ettermiddag er selve gullstandarden for en ettermiddagslur." },
-                { tid: 1600, tekst: "Lad opp til lørdagskvelden med en time på øyet." },
-                { tid: 1800, tekst: "Ingen planer i kveld? Perfekt, senga er ledig." },
-                { tid: 2000, tekst: "Lørdag kveld på sofaen. Pleddet er på, og øynene glir igjen." },
-                { tid: 2200, tekst: "Kroppen din stemmer for tidlig kveld i kveld." },
-                { tid: 2300, tekst: "Nyt at du ikke må sette på alarm til i morgen, og sov godt." }
+                { tid: 0, tekst: "TmF0dCB0aWwgbMO4cmRhZy4gRW50ZW4gZXIgZHUgcMOlIHZlaSBoamVtLCBlbGxlciBzw6UgYnVyZGUgZHUgc292ZXQgZm9yIGxlbmdzdC4=" },
+                { tid: 5, tekst: "RmVtIG1pbnV0dGVyIGlubiBpIGzDuHJkYWcuIFZpIGZvcmVzbMOlciBhdCByZXN0ZW4gdGFzIG1lZCBsdWtrZWRlIMO4eW5lLg==" },
+                { tid: 100, tekst: "TmF0dCB0aWwgbMO4cmRhZy4gUHV0YSBoYXIgaG9sZHQgYXYgcGxhc3MgdGlsIGRlZywgb2cgZGVuIHRhciBpa2tlIG5hdHRlc3Rlbmd0Lg==" },
+                { tid: 200, tekst: "S2xva2thIGVyIHRvLiBMw7hyZGFnIHRyZW5nZXIgaWtrZSBldCBuYXR0c2tpZnQgbWVkIHNjcm9sbGluZy4=" },
+                { tid: 300, tekst: "QmVzdGlsbCBuYXR0bWF0LCBkcmlrayBldCBnbGFzcyB2YW5uIG9nIGtvbSBkZWcgaSBzZW5nLg==" },
+                { tid: 333, tekst: "MDM6MzMuIFRyZSB0cmVlcmUsIGV0dCBnamVzcCBvZyBlbiBwdXRlIHNvbSBzYXZuZXIgZGVnLg==" },
+                { tid: 334, tekst: "TMO4cmRhZyBtaWR0IHDDpSBuYXR0YS4gVGFsbG1hZ2kgZXIgb3ZlciwgbWVuIHNlbmdhIGVyIGZvcnRzYXR0IMOlcGVuLg==" },
+                { tid: 404, tekst: "NDA0OiBMw7hyZGFnZW5lcmdpZW4gYmxlIGlra2UgZnVubmV0LiBQcsO4diBpZ2plbiBldHRlciBsaXR0IHPDuHZuLg==" },
+                { tid: 405, tekst: "TMO4cmRhZyBpIGZpcmV0aWRlbi4gTmF0dG1vZHVzIHBhc3NlciBiZXN0IHVuZGVyIGR5bmEu" },
+                { tid: 500, tekst: "TMO4cmRhZyBpIGZlbXRpZGVuLiBEeW5hIGhhciBmb3J0c2F0dCBteWUgw6UgdGlsYnku" },
+                { tid: 600, tekst: "SHZvcmZvciBlciBkdSB2w6VrZW4ga2xva2thIHNla3MgcMOlIGVuIGzDuHJkYWc/IEfDpSBvZyBsZWdnIGRlZyE=" },
+                { tid: 700, tekst: "TMO4cmRhZyBtb3JnZW4uIER1IG9nIHB1dGEgdmFyIG1pZHQgaSBub2Uu" },
+                { tid: 730, tekst: "TMO4cmRhZyBtb3JnZW4uIEFsYXJtZW4gaGFyIGluZ2VuIG15bmRpZ2hldCBoZXIgdW5kZXIgZHluYS4=" },
+                { tid: 800, tekst: "RGV0IGVyIGzDuHJkYWcgbW9yZ2VuLiBWZXJkZW4gw6VwbmVyIGlra2UgZsO4ciBrbG9ra2EgdG9sdi4gU292IHZpZGVyZS4=" },
+                { tid: 900, tekst: "SGVsZ2VyIGVyIHNrYXB0IGZvciDDpSB0YSBpZ2plbiBkZXQgdGFwdGUuIEJsaSB1bmRlciBkeW5hLg==" },
+                { tid: 930, tekst: "RGFnZW5zIGbDuHJzdGUgcGxhbiBrYW4gdsOmcmUgw6Ugc251IHB1dGEuIFZpIHN0w7h0dGVyIGV0IG92ZXJzaWt0bGlnIHByb2dyYW0u" },
+                { tid: 1000, tekst: "RnJva29zdGVuIGthbiB2ZW50ZS4gU8O4dm4gZXIgZmVyc2t2YXJlLg==" },
+                { tid: 1030, tekst: "RnJva29zdCBlbGxlciBsaXR0IG1lciBkeW5lPyBWaSBlciBlbiBuZXR0c2lkZSBtZWQgZXQgZ2Fuc2tlIHR5ZGVsaWcgc3RhbmRwdW5rdC4=" },
+                { tid: 1100, tekst: "TMO4cmRhZyBmw7hyIGx1bnNqLiBFbiBsaXRlbiBwYXVzZSBmcmEgw6UgdsOmcmUgdmVydGlrYWwgZnJpc3Rlci4=" },
+                { tid: 1111, tekst: "MTE6MTEgcMOlIGVuIGzDuHJkYWcuIMOYbnNrIGRlZyBlbiBzb2ZhIG1lZCBsZWRpZyBwbGFzcy4=" },
+                { tid: 1112, tekst: "TMO4cmRhZyBmb3JtaWRkYWcuIEtsb2trYSBoYXIgc2x1dHRldCDDpSB2w6ZyZSBtYWdpc2ssIG1lbiBwbGVkZGV0IHZpcmtlciBmb3J0c2F0dC4=" },
+                { tid: 1200, tekst: "RHUgaGFyIHbDpnJ0IHbDpWtlbiBpIGV0IHBhciB0aW1lciBuw6UuIFDDpSB0aWRlIG1lZCBkYWdlbnMgZsO4cnN0ZSBsdXIu" },
+                { tid: 1234, tekst: "MTI6MzQuIFRhbGxlbmUgc3TDpXIgcMOlIHJla2tlLiBEdSBrYW4gZ29kdCBsaWdnZSBww6UgbGFuZ3Mu" },
+                { tid: 1235, tekst: "TMO4cmRhZyBldHRlciBsdW5zai4gRGFnZW5zIG5lc3RlIHB1bmt0IGVyIMOlIGZpbm5lIGVuIG15ayBzaXR0ZXBsYXNzLg==" },
+                { tid: 1300, tekst: "TMO4cmRhZyBrbG9ra2EgZXR0LiBLYWZmZWtvcHBlbiBlciB0b20sIG1lbiBnamVzcGV0IGhhciBww6VmeWxsLg==" },
+                { tid: 1337, tekst: "TWFubmVuIHNhIGwzM3QhIEzDuHJkYWcgZmlrayBuZXR0b3BwIGV0IGxpdGUgYm9udXNwb2VuZy4=" },
+                { tid: 1338, tekst: "TMO4cmRhZyBldHRlciBib251c3J1bmRlbi4gVGlsYmFrZSB0aWwgdmFubGlnIGdqZXNwaW5nLg==" },
+                { tid: 1400, tekst: "TMO4cmRhZyBldHRlcm1pZGRhZyBlciBzZWx2ZSBndWxsc3RhbmRhcmRlbiBmb3IgZW4gZXR0ZXJtaWRkYWdzbHVyLg==" },
+                { tid: 1430, tekst: "TMO4cmRhZ2VucyBnasO4cmVtw6Vsc2xpc3RlIGhhciBpbmdlbiByZXR0IHRpbCDDpSBvcHB0YSBoZWxlIHNvZmFlbi4=" },
+                { tid: 1500, tekst: "TMO4cmRhZyBrbG9ra2EgdHJlLiBEYWdlbnMgbWVzdCBmcmlzdGVuZGUgZmFuZXIgZXIgZGUgcMOlIHNlbmdldMO4eWV0Lg==" },
+                { tid: 1600, tekst: "TGFkIG9wcCB0aWwgbMO4cmRhZ3NrdmVsZGVuIG1lZCBlbiB0aW1lIHDDpSDDuHlldC4=" },
+                { tid: 1630, tekst: "RHUgaGFyIGhlbGUga3ZlbGRlbiBmb3JhbiBkZWcuIEVuIG15ayBtZWxsb21sYW5kaW5nIGVyIGlra2Ugw6Uga2FzdGUgZGVuIGJvcnQu" },
+                { tid: 1700, tekst: "TMO4cmRhZyBldHRlcm1pZGRhZy4gUGxlZGRldCBsaWdnZXIga2xhcnQgb2cgc3RpbGxlciBpbmdlbiBzcMO4cnNtw6VsLg==" },
+                { tid: 1800, tekst: "SW5nZW4gcGxhbmVyIGkga3ZlbGQ/IFBlcmZla3QsIHNlbmdhIGVyIGxlZGlnLg==" },
+                { tid: 1900, tekst: "TMO4cmRhZyBrdmVsZC4gRmplcm5rb250cm9sbGVuIGxpZ2dlciBuw6ZybWVyZSBlbm4gbW90aXZhc2pvbmVuLg==" },
+                { tid: 1930, tekst: "TMO4cmRhZyBrdmVsZC4gUGxlZGRldCBlciBldCBmdWxsdmVyZGlnIGFudHJla2sgZm9yIGRlbm5lIGFubGVkbmluZ2VuLg==" },
+                { tid: 2000, tekst: "TMO4cmRhZyBrdmVsZCBww6Ugc29mYWVuLiBQbGVkZGV0IGVyIHDDpSwgb2cgw7h5bmVuZSBnbGlyIGlnamVuLg==" },
+                { tid: 2030, tekst: "RGV0IGVyIGluZ2VuIGvDuCB0aWwgZGVuIGthbGRlIHNpZGVuIGF2IHB1dGEuIER1IGthbiBnw6UgcmV0dCBpbm4u" },
+                { tid: 2100, tekst: "TMO4cmRhZyBrbG9ra2EgbmkuIE5lc3RlIGVwaXNvZGUga2FuIHZlbnRlLCBwdXRhIGVyIGFsbGVyZWRlIGtsYXIu" },
+                { tid: 2200, tekst: "S3JvcHBlbiBkaW4gc3RlbW1lciBmb3IgdGlkbGlnIGt2ZWxkIGkga3ZlbGQu" },
+                { tid: 2222, tekst: "MjI6MjIuIEZpcmUgdG9lcmUsIG51bGwgZ3J1bm4gdGlsIMOlIHN0YXJ0ZSBlbiBueSBlcGlzb2RlLg==" },
+                { tid: 2223, tekst: "TMO4cmRhZyBrdmVsZC4gVGFsbGVuZSBlciB2YW5saWdlIGlnamVuLCBvZyBzZW5nYSBlciBsaWtlIGZyaXN0ZW5kZS4=" },
+                { tid: 2300, tekst: "Tnl0IGF0IGR1IGlra2UgbcOlIHNldHRlIHDDpSBhbGFybSB0aWwgaSBtb3JnZW4sIG9nIHNvdiBnb2R0Lg==" },
+                { tid: 2330, tekst: "TMO4cmRhZyBlciBzbmFydCBmZXJkaWcuIFPDuG5kYWcgYmVneW5uZXIgbGlrZSBmaW50IG1lZCBsdWtrZWRlIMO4eW5lLg==" },
+                { tid: 2359, tekst: "RXR0IG1pbnV0dCBpZ2plbiBhdiBsw7hyZGFnLiBEdSB0cmVuZ2VyIGlra2UgdsOmcmUgdsOla2VuIGZvciBydWxsZXRla3N0ZW4u" },
             ],
             0: [ // Søndag
-                { tid: 0, tekst: "Det er søndag. Hele dagen i morgen er dedikert til hvile, start nå." },
-                { tid: 300, tekst: "Klokka er tre natt til søndag. Finn senga." },
-                { tid: 600, tekst: "Det er forbudt ved norsk lov å stå opp klokka seks på en søndag." },
-                { tid: 800, tekst: "Søndag morgen. Snu puta til den kalde siden og sov to timer til." },
-                { tid: 900, tekst: "Det eneste du skal prestere i dag er hvilepuls." },
-                { tid: 1000, tekst: "Søndager uten planer er naturens måte å si «bli i senga» på." },
-                { tid: 1200, tekst: "Halvveis i søndagen. Har du husket å hvile etter frokost?" },
-                { tid: 1400, tekst: "Søndagstur? Nei, søndagslur." },
-                { tid: 1500, tekst: "Det regner sikkert et sted i nærheten. Perfekt sovevær." },
-                { tid: 1600, tekst: "Søndag klokka fire er den offisielle nasjonale sovetimen på sofaen." },
-                { tid: 1800, tekst: "Lad opp til ny uke ved å gjøre absolutt ingenting i vannrett posisjon." },
-                { tid: 1900, tekst: "Søndagsfølelsen kureres best med et teppe og lukkede øyne." },
-                { tid: 2000, tekst: "I morgen er det mandag. Start forberedelsene med å legge deg tidlig." },
-                { tid: 2100, tekst: "Klokka er ni på søndag. Jo mer du sover nå, jo mindre trøtt blir mandagen." },
-                { tid: 2200, tekst: "Puss tenner, sett på alarmen, og få deg en skikkelig natts søvn." },
-                { tid: 2300, tekst: "Mandagen lurer rundt hjørnet. Lukk øynene før den ser deg." }
-            ]
+                { tid: 0, tekst: "TWlkbmF0dC4gRGV0IGVyIG9mZmlzaWVsdCBzw7huZGFnLCBvZyBodmlsZWRhZ2VuIHN0YXJ0ZXIgaSBob3Jpc29udGFsIHN0aWxsaW5nLg==" },
+                { tid: 5, tekst: "RGV0IGVyIHPDuG5kYWcuIEhlbGUgZGFnZW4gaSBkYWcgZXIgZGVkaWtlcnQgdGlsIGh2aWxlLCBzdGFydCBuw6Uu" },
+                { tid: 100, tekst: "TmF0dCB0aWwgc8O4bmRhZy4gVWFuc2V0dCBodmEgZHUgaG9sZGVyIHDDpSBtZWQgbsOlLCBrYW4gZGV0IHZlbnRlIHRpbCBpIG1vcmdlbi4=" },
+                { tid: 200, tekst: "TWlkdCBww6UgbmF0dGEuIFNlbHYgbmF0dHVnbGVuZSBoYXIgcGFra2V0IHNhbW1lbiBvZyBmdW5uZXQgcHV0YS4=" },
+                { tid: 258, tekst: "S2xva2thIGVyIHRyZSBuYXR0IHRpbCBzw7huZGFnLiBGaW5uIHNlbmdhLg==" },
+                { tid: 306, tekst: "T3ZlciBrbG9ra2EgdHJlIG5hdHQgdGlsIHPDuG5kYWcuIEluZ2VudGluZyBnb2R0IHNramVyIGkgdsOla2VuIHRpbHN0YW5kIG7DpSDigJMgbGVnZyBkZWcu" },
+                { tid: 333, tekst: "MDM6MzMuIEhhbHZ2ZWlzIHRpbCBoYWx2IHNqdS4gTHVrayDDuHluZW5lIG1lZCBlbiBnYW5nLg==" },
+                { tid: 334, tekst: "T3ZlciBrbG9ra2EgdHJlIG5hdHQgdGlsIHPDuG5kYWcuIEluZ2VudGluZyBnb2R0IHNramVyIGkgdsOla2VuIHRpbHN0YW5kIG7DpSDigJMgbGVnZyBkZWcu" },
+                { tid: 400, tekst: "QWx0Zm9yIHNlbnQgZm9yIGzDuHJkYWcsIGFsdGZvciB0aWRsaWcgZm9yIHPDuG5kYWcuIFNlbmdhIGVyIGVuZXN0ZSBsw7hzbmluZy4=" },
+                { tid: 404, tekst: "NDA0OiBWw6VrZW5oZXQgaWtrZSBmdW5uZXQuIFByw7h2IGlnamVuIHV0cMOlIGZvcm1pZGRhZ2VuLg==" },
+                { tid: 405, tekst: "QWx0Zm9yIHNlbnQgZm9yIGzDuHJkYWcsIGFsdGZvciB0aWRsaWcgZm9yIHPDuG5kYWcuIFNlbmdhIGVyIGVuZXN0ZSBsw7hzbmluZy4=" },
+                { tid: 500, tekst: "R3LDpWx5c25pbmcgcMOlIGVuIHPDuG5kYWcuIEZ1Z2xlbmUgaGFyIGlra2UgZW5nYW5nIHZ1cmRlcnQgw6Ugc3TDpSBvcHAgZW5uw6Uu" },
+                { tid: 558, tekst: "RGV0IGVyIGZvcmJ1ZHQgdmVkIG5vcnNrIGxvdiDDpSBzdMOlIG9wcCBrbG9ra2Egc2VrcyBww6UgZW4gc8O4bmRhZy4=" },
+                { tid: 608, tekst: "U8O4bmRhZyBpIHNla3N0aWRlbi4gVmVyZGVuIGhvbGRlciBzdGVuZ3QsIG9nIGR1IGhhciBmcmkuIFNvdiB2aWRlcmUu" },
+                { tid: 700, tekst: "QWx0Zm9yIHRpZGxpZyBww6UgZW4gc8O4bmRhZyBtb3JnZW4uIEtyeXAgbGVuZ2VyIG5lZCB1bmRlciBkeW5hLg==" },
+                { tid: 730, tekst: "U8O4bmRhZyBtb3JnZW4uIERldCBtZXN0IHByZXNzZXJlbmRlIGFra3VyYXQgbsOlIGVyIMOlIGZpbm5lIGVuIGJlZHJlIGxpZ2dlc3RpbGxpbmcu" },
+                { tid: 800, tekst: "U8O4bmRhZyBtb3JnZW4uIFNudSBwdXRhIHRpbCBkZW4ga2FsZGUgc2lkZW4gb2cgc292IHRvIHRpbWVyIHRpbC4=" },
+                { tid: 900, tekst: "RGV0IGVuZXN0ZSBkdSBza2FsIHByZXN0ZXJlIGkgZGFnIGVyIGh2aWxlcHVscy4=" },
+                { tid: 930, tekst: "RGFnZW5zIHByb2dyYW0gZXIgZm9ydHNhdHQgdW5kZXIgZHluYS4gVmkgc2VyIGluZ2VuIGdydW5uIHRpbCDDpSBmbHl0dGUgZGV0Lg==" },
+                { tid: 1000, tekst: "U8O4bmRhZ2VyIHV0ZW4gcGxhbmVyIGVyIG5hdHVyZW5zIG3DpXRlIMOlIHNpIMKrYmxpIGkgc2VuZ2HCuyBww6Uu" },
+                { tid: 1030, tekst: "U8O4bmRhZ3Nmcm9rb3N0ZW4ga2FuIHZhcmUgbGVuZ2UuIFBhdXNlbiBldHRlcnDDpSBrYW4gdmFyZSBsaXR0IGxlbmdlci4=" },
+                { tid: 1100, tekst: "U2VuIHPDuG5kYWdzZnJva29zdCBrcmV2ZXIgYWxsdGlkIGVuIHDDpWbDuGxnZW5kZSBzdHJla2sgcMOlIHNvZmFlbi4=" },
+                { tid: 1111, tekst: "MTE6MTEuIMOYbnNrIGRlZyBlbiBsdXIuIMOYbnNrZXQgZXIgaGVydmVkIG9wcGZ5bHQu" },
+                { tid: 1112, tekst: "U2VuIHPDuG5kYWdzZnJva29zdCBrcmV2ZXIgYWxsdGlkIGVuIHDDpWbDuGxnZW5kZSBzdHJla2sgcMOlIHNvZmFlbi4=" },
+                { tid: 1200, tekst: "SGFsdnZlaXMgaSBzw7huZGFnZW4uIEhhciBkdSBodXNrZXQgw6UgaHZpbGUgZXR0ZXIgZnJva29zdD8=" },
+                { tid: 1234, tekst: "MTI6MzQuIFRhbGxlbmUgc3TDpXIgcGVudCBww6UgcmVra2UsIG1lbiBkdSBiw7hyIGxpZ2dlIGhlbHQgZmxhdHQu" },
+                { tid: 1235, tekst: "SGFsdnZlaXMgaSBzw7huZGFnZW4uIEhhciBkdSBodXNrZXQgw6UgaHZpbGUgZXR0ZXIgZnJva29zdD8=" },
+                { tid: 1300, tekst: "U8O4bmRhZ3NrYWZmZW4uIEtvcHBlbiBlciB2YXJtLCBtZW4gc29mYWVuIGthbGxlciBhbGxlcmVkZS4=" },
+                { tid: 1337, tekst: "TWFubmVuIHNhIGwzM3QhIFNlbHYgcMOlIGh2aWxlZGFnZW4u" },
+                { tid: 1338, tekst: "U8O4bmRhZ3NrYWZmZW4uIEtvcHBlbiBlciB2YXJtLCBtZW4gc29mYWVuIGthbGxlciBhbGxlcmVkZS4=" },
+                { tid: 1400, tekst: "U8O4bmRhZ3N0dXI/IE5laSwgc8O4bmRhZ3NsdXIu" },
+                { tid: 1430, tekst: "U8O4bmRhZ3N0dXIga2FuIHN0YXZlcyBtZWQgZW4gZWtzdHJhIGwuIFZpIGFuYmVmYWxlciBkZW4gbXlrZSB2YXJpYW50ZW4u" },
+                { tid: 1500, tekst: "RGV0IHJlZ25lciBzaWtrZXJ0IGV0IHN0ZWQgaSBuw6ZyaGV0ZW4uIFBlcmZla3Qgc292ZXbDpnIu" },
+                { tid: 1558, tekst: "U8O4bmRhZyBrbG9ra2EgZmlyZSBlciBkZW4gb2ZmaXNpZWxsZSBuYXNqb25hbGUgc292ZXRpbWVuIHDDpSBzb2ZhZW4u" },
+                { tid: 1610, tekst: "RXR0ZXJtaWRkYWdzaHZpbGVuIHDDpSBzw7huZGFnIGVyIGhlbGxpZy4gRmlubiBmcmFtIHBsZWRkZXQu" },
+                { tid: 1630, tekst: "UGxlZGRldCBoYXIgbGFndCBmcmVtIGV0IGZvcnNsYWcgdGlsIHJlc3RlbiBhdiBldHRlcm1pZGRhZ2VuLiBEZXQgZXIgZW5zdGVtbWlnIHZlZHRhdHQu" },
+                { tid: 1700, tekst: "U8O4bmRhZ3NtaWRkYWdlbiBuw6ZybWVyIHNlZy4gU3BhciBww6Uga3JlZnRlbmUgbWVkIGVuIGxpdGVuIGJsdW5kIGbDuHJzdC4=" },
+                { tid: 1745, tekst: "TWF0a29tYSBww6UgZW4gc8O4bmRhZyBrdXJlcmVzIGt1biBpIHZhbm5yZXR0IHBvc2lzam9uLg==" },
+                { tid: 1815, tekst: "TGFkIG9wcCB0aWwgbnkgdWtlIHZlZCDDpSBnasO4cmUgYWJzb2x1dHQgaW5nZW50aW5nIGkgdmFubnJldHQgcG9zaXNqb24u" },
+                { tid: 1900, tekst: "U8O4bmRhZ3Nmw7hsZWxzZW4ga3VyZXJlcyBiZXN0IG1lZCBldCB0ZXBwZSBvZyBsdWtrZWRlIMO4eW5lLg==" },
+                { tid: 1930, tekst: "RHUgdHJlbmdlciBpa2tlIHN0YXJ0ZSBtYW5kYWdlbiBpIGhvZGV0IGFsbGVyZWRlIG7DpS4gU8O4bmRhZyBoYXIgZm9ydHNhdHQgc29mYWVuLg==" },
+                { tid: 2000, tekst: "SSBtb3JnZW4gZXIgZGV0IG1hbmRhZy4gU3RhcnQgZm9yYmVyZWRlbHNlbmUgbWVkIMOlIGxlZ2dlIGRlZyB0aWRsaWcu" },
+                { tid: 2030, tekst: "TW9yZ2VuZGFnZW5zIHBsYW5lciBrYW4gbGlnZ2UgaSBrYWxlbmRlcmVuLiBEdSBrYW4gbGlnZ2UgaSBzZW5nYS4=" },
+                { tid: 2058, tekst: "S2xva2thIGVyIG5pIHDDpSBzw7huZGFnLiBKbyBtZXIgZHUgc292ZXIgbsOlLCBqbyBtaW5kcmUgdHLDuHR0IGJsaXIgbWFuZGFnZW4u" },
+                { tid: 2108, tekst: "U8O4bmRhZyBrdmVsZC4gSWtrZSBzdGFydCBww6UgZW4gbnkgZXBpc29kZSBuw6Ug4oCTIHN0YXJ0IHDDpSBuYXR0ZXPDuHZuZW4u" },
+                { tid: 2200, tekst: "UHVzcyB0ZW5uZXIsIHNldHQgcMOlIGFsYXJtZW4sIG9nIGbDpSBkZWcgZW4gc2tpa2tlbGlnIG5hdHRzIHPDuHZuLg==" },
+                { tid: 2222, tekst: "MjI6MjIuIEZpcmUgdG9lcmUgcMOlIHJhZCBiZXR5ciBkb2JiZWwgZHluZSBvZyBudWxsIHNramVybXRpZC4=" },
+                { tid: 2223, tekst: "UHVzcyB0ZW5uZXIsIHNldHQgcMOlIGFsYXJtZW4sIG9nIGbDpSBkZWcgZW4gc2tpa2tlbGlnIG5hdHRzIHPDuHZuLg==" },
+                { tid: 2300, tekst: "TWFuZGFnZW4gbHVyZXIgcnVuZHQgaGrDuHJuZXQuIEx1a2sgw7h5bmVuZSBmw7hyIGRlbiBzZXIgZGVnLg==" },
+                { tid: 2330, tekst: "RW4gaGFsdnRpbWUgaWdqZW4gYXYgaGVsZ2EuIERlbiBrYW4gZ29kdCB0aWxicmluZ2VzIHDDpSBkZW4ga2FsZGUgc2lkZW4gYXYgcHV0YS4=" },
+                { tid: 2359, tekst: "RXR0IG1pbnV0dCB0aWwgbWFuZGFnLiBTb3ZuZXIgZHUgbsOlLCB0ZWxsZXIgZGV0IGZvcnRzYXR0IHNvbSBoZWxnZXPDuHZuLg==" },
+            ],
         };
+
+        const unnskyldninger = [
+            "wqtKZWcgZXIgaWtrZSB1dGlsZ2plbmdlbGlnLiBKZWcgZXIgdGlsZ2plbmdlbGlnIGlnamVuIGV0dGVyIGxhZGluZy7Cuw==",
+            "wqtEeW5hIGhhciBzZW5kdCBlbiBtw7h0ZWlubmthbGxpbmcgamVnIGlra2Uga2FuIGF2c2zDpS7Cuw==",
+            "wqtKZWcgaGFyIGVuIGF2dGFsZSBtZWQgcHV0YS4gRGVuIGJsZSBib29rZXQgbGVuZ2UgZsO4ciBkZXR0ZS7Cuw==",
+            "wqtTb2ZhZW4gdHJlbmdlciB0aWxzeW4sIG9nIGplZyB0YXIgYW5zdmFyZXQgcMOlIGFsdm9yLsK7",
+            "wqtKZWcgdGVzdGVyIG9tIHNlbmdhIGZvcnRzYXR0IGZ1bmdlcmVyIHNvbSBmb3J2ZW50ZXQuwrs=",
+            "wqvDmHllbG9ra2VuZSBoYXIgYmVkdCBvbSByZWR1c2VydCDDpXBuaW5nc3RpZC7Cuw==",
+            "wqtKZWcgaGFyIGfDpXR0IHRvbSBmb3IgdsOla2VuaGV0LiBOeSBsZXZlcmluZyBrb21tZXIgaSBtb3JnZW4uwrs=",
+            "wqtEZXR0ZSBlciBpa2tlIGVuIGx1ci4gRGV0IGVyIGVuIG1pZGxlcnRpZGlnIHN5c3RlbXBhdXNlLsK7",
+            "wqtKZWcgaGFyIHNhdHQgbWVnIHNlbHYgaSBmbHltb2R1cy7Cuw==",
+            "wqtQbGVkZGV0IGhhciBmYW5nZXQgbWVnLiBTaXR1YXNqb25lbiBlciBmb3JlbMO4cGlnIGJlaGFnZWxpZy7Cuw==",
+            "wqtKZWcgam9iYmVyIG1lZCBldCBwcm9zamVrdCBzb20ga3JldmVyIGx1a2tlZGUgw7h5bmUuwrs=",
+            "wqtLYWxlbmRlcmVuIG1pbiBoYXIgZXQgbGVkaWcgZmVsdCBzb20gcGFzc2VyIHBlcmZla3QgdGlsIGVuIGx1ci7Cuw==",
+            "wqtKZWcgaGFyIGV0IGludGVybnQgbcO4dGUgbWVkIHVuZGVyYmV2aXNzdGhldGVuLsK7",
+            "wqtEZXR0ZSBtw7h0ZXQga3VubmUgdsOmcnQgZW4gbHVyLsK7",
+            "wqtKZWcgaGFyIGRlbGVnZXJ0IHJlc3RlbiBhdiBkYWdlbiB0aWwgbW9yZ2VuZGFnZW5zIG1lZy7Cuw==",
+            "wqtKZWcgZXIgb3BwdGF0dCBtZWQgw6UgZ2rDuHJlIGluZ2VudGluZyBza2lra2VsaWcuwrs=",
+            "wqtEYWdlbnMgdmlrdGlnc3RlIGxldmVyYW5zZSBlciBldCBhdnRyeWtrIGkgcHV0YS7Cuw==",
+            "wqtKZWcgaGFyIHNhdHQgZW4gdHlkZWxpZyBncmVuc2UgbWVsbG9tIG1lZyBvZyByZXN0ZW4gYXYgZGFnZW4uwrs=",
+            "wqtKZWcgdGFyIGVuIHBhdXNlIGZyYSBwYXVzZW4gZm9yIMOlIGh2aWxlIGxpdHQuwrs=",
+            "wqtKZWcgaGFyIGFsbGVyZWRlIHbDpnJ0IG9wcGUuIERldCBmw6VyIGhvbGRlIHNvbSBkb2t1bWVudGFzam9uLsK7",
+            "wqtQdXRhIGhhciBha2t1cmF0IGbDpXR0IGRlbiBwZXJmZWt0ZSB0ZW1wZXJhdHVyZW4uIEplZyBrYW4gaWtrZSBrYXN0ZSBib3J0IMO4eWVibGlra2V0LsK7",
+            "wqtTZW5nYSBzZXIgZW5zb20gdXQuIEplZyBiaWRyYXIgdGlsIGJlZHJlIHNlbHNrYXAuwrs=",
+            "wqtEeW5hIG9nIGplZyBoYXIga29tbWV0IHRpbCBlbmlnaGV0IG9tIHJlc3RlbiBhdiBkYWdlbi7Cuw==",
+            "wqtKZWcgaGFyIGZ1bm5ldCBlbiBnb2QgbGlnZ2VzdGlsbGluZyBvZyB2aWwgaWtrZSByaXNpa2VyZSDDpSBtaXN0ZSBkZW4uwrs=",
+            "wqtTb2ZhZW4gaGFyIHJlc2VydmVydCBwbGFzcyB0aWwgbWVnLsK7",
+            "wqtKZWcgbcOlIHVuZGVyc8O4a2UgZGVuIGthbGRlIHNpZGVuIGF2IHB1dGEgbsOmcm1lcmUuwrs=",
+            "wqtTZW5nZXTDuHlldCBlciByZW50LiBEZXQgdmlsbGUgdsOmcnQgdWjDuGZsaWcgw6UgaWtrZSBtw7h0ZSBvcHAuwrs=",
+            "wqtQbGVkZGV0IHBhc3NlciB0aWwgYW50cmVra2V0IG1pdHQuIEplZyBibGlyIGhlci7Cuw==",
+            "wqtKZWcgaGFyIGxvdmV0IG1hZHJhc3NlbiBsaXR0IGt2YWxpdGV0c3RpZC7Cuw==",
+            "wqtTZW5nYSBlciBhbGxlcmVkZSByZWRkIG9wcCBmb3IgZGV0dGUgZm9ybcOlbGV0LsK7",
+            "wqtKZWcgaGFyIGZvciBtYW5nZSBmYW5lciDDpXBuZSBpIGhvZGV0LsK7",
+            "wqtIamVybmVuIHZpc2VyIGV0IGxhc3RlaGp1bC4gSmVnIHZlbnRlciB0aWwgZGV0IGVyIGZlcmRpZy7Cuw==",
+            "wqtNaW4gaW5kcmUgc2tqZXJtIGhhciBnw6V0dCBpIGh2aWxlbW9kdXMuwrs=",
+            "wqtKZWcgaW5zdGFsbGVyZXIgc3RpbGxoZXQuIERldHRlIGthbiB0YSBsaXR0IHRpZC7Cuw==",
+            "wqtEYWdlbnMgdsOla2VuaGV0IGVyIGJydWt0IG9wcC4gUHLDuHYgaWdqZW4gc2VuZXJlLsK7",
+            "wqtKZWcgaGFyIG1pc3RldCBmb3JiaW5kZWxzZW4gdGlsIHRpbHRha3NseXN0ZW4uwrs=",
+            "wqtTeXN0ZW1ldCBzdMO4dHRlciBpa2tlIGZsZXJlIGdqw7hyZW3DpWwgYWtrdXJhdCBuw6Uuwrs=",
+            "wqtKZWcgdGFyIGVuIG9tc3RhcnQgdXRlbiDDpSByZWlzZSBtZWcuwrs=",
+            "wqtKZWcgaGFyIGFrdGl2ZXJ0IHN0csO4bXNwYXJpbmcgcMOlIGhlbGUgbWVnLsK7",
+            "wqtWYXJzbGVyIGVyIHNsw6V0dCBhdiB0aWwgcHV0YSBzaWVyIG5vZSBhbm5ldC7Cuw==",
+            "wqtEZXQgZXIgbWFuZGFnIGV0IHN0ZWQgaSBmw7hsZWxzZXNsaXZldCBtaXR0LsK7",
+            "wqtUaXJzZGFnZW4ga29tIHV0ZW4gYnJ1a3NhbnZpc25pbmcuIEplZyB0YXIgZW4gcGF1c2Uuwrs=",
+            "wqtPbnNkYWcgZXIgaGFsdnZlaXMgdGlsIGhlbGcgb2cgaGVsdCBmcmVtbWUgdmVkIHNvZmFlbi7Cuw==",
+            "wqtKZWcgw7h2ZXIgcMOlIMOlIHbDpnJlIHV0aHZpbHQgdGlsIGZyZWRhZy7Cuw==",
+            "wqtGcmVkYWdlbiBmb3J0amVuZXIgZW4gbXlrIGxhbmRpbmcuwrs=",
+            "wqtMw7hyZGFnZW4gaGFyIGluZ2VuIGlubnZlbmRpbmdlciBtb3QgZGV0dGUuwrs=",
+            "wqtTw7huZGFnZW4gb2cgamVnIGhhciBzYW1tZSBhbWJpc2pvbnNuaXbDpS7Cuw==",
+            "wqtKZWcgdGFyIGhlbGcgZnJhIMOlIGhvbGRlIMO4eW5lbmUgw6VwbmUuwrs=",
+            "wqtEZXR0ZSBlciBlbiBnZW5lcmFscHLDuHZlIHDDpSBuZXN0ZSBmcmlkYWcuwrs=",
+            "wqtKZWcgZm9ybGVuZ2VyIGhlbGdlZsO4bGVsc2VuIG1lZCBsdWtrZWRlIMO4eW5lLsK7",
+            "wqtSZWduZXQgaMO4cmVzIGJlZHJlIHV0IGZyYSB1bmRlciBkeW5hLsK7",
+            "wqtTb2xhIGtsYXJlciDDpSBza2lubmUgdXRlbiBhdCBqZWcgZsO4bGdlciBtZWQuwrs=",
+            "wqtTa3llbmUgc2VyIHV0IHNvbSBwdXRlci4gSmVnIHRhciBoaW50ZXQuwrs=",
+            "wqtWaW5kZW4gaGFyIG5vayBlbmVyZ2kgZm9yIG9zcyBiZWdnZS7Cuw==",
+            "wqtWw6ZyZXQgdXRlbmZvciBrcmV2ZXIgaWtrZSBtaW4gcGVyc29ubGlnZSBkZWx0YWtlbHNlLsK7",
+            "wqtKZWcgdmVudGVyIHDDpSBldCB2w6ZydmFyc2VsIHNvbSBhbmJlZmFsZXIgw6Ugc3TDpSBvcHAuwrs=",
+            "wqtEZXQgZXIgcGVyZmVrdCB0ZW1wZXJhdHVyIHVuZGVyIGRldHRlIHBsZWRkZXQuwrs=",
+            "wqtKZWcgaGFyIHZhbGd0IGlubmVuZMO4cnNha3Rpdml0ZXRlciBtZWQgc3bDpnJ0IGxhdiBha3Rpdml0ZXQuwrs=",
+            "wqtEYWdzbHlzZXQgZsOlciBrbGFyZSBzZWcgbWVkIGRlIGFuZHJlLsK7",
+            "wqtKZWcgbGFyIHbDpnJldCBnasO4cmUgc2l0dCBtZW5zIGplZyBnasO4ciBpbmdlbnRpbmcuwrs=",
+            "wqtLYWZmZW4gb2cgamVnIGhhciBibGl0dCBlbmlnZSBvbSDDpSBwcsO4dmUgaWdqZW4gc2VuZXJlLsK7",
+            "wqtGcm9rb3N0ZW4gdmFyIGRhZ2VucyBzdG9yZSBiZWdpdmVuaGV0LiBOw6UgdHJlbmdlciBqZWcgZXQgc2NlbmVza2lmdGUuwrs=",
+            "wqtKZWcgdmVudGVyIHDDpSBhdCBtaWRkYWdlbiBza2FsIGJsaSBldCBmamVybnQgbWlubmUuwrs=",
+            "wqtUYWNvZW4gZXIgZmVyZGlnLiBOw6UgZXIgZGV0IG1pbiB0dXIgdGlsIMOlIHBha2tlcyBpbm4uwrs=",
+            "wqtKZWcgaGFyIGJ5dHRldCB1dCBrYWZmZWtvcHBlbiBtZWQgZW4gcHV0ZS7Cuw==",
+            "wqtMdW5zamVuIHZhciBnb2QsIG1lbiBzb2ZhZW4gaGFyIGV0IGJlZHJlIGV0dGVyc21ha3N0aWxidWQuwrs=",
+            "wqtPcHB2YXNrZW4gb2cgamVnIHRyZW5nZXIgbGl0dCBhdnN0YW5kIGFra3VyYXQgbsOlLsK7",
+            "wqtKZWcgbGFyIHRlZW4gdHJla2tlIG9nIG1lZyBzZWx2IHN5bmtlIG5lZCBpIHNvZmFlbi7Cuw==",
+            "wqtLasO4a2tlbmV0IGVyIHN0ZW5ndC4gSHZpbGVhdmRlbGluZ2VuIGVyIMOlcGVuLsK7",
+            "wqtKZWcgaGFyIHNwaXN0IGZlcmRpZyBvZyBnw6V0dCB2aWRlcmUgdGlsIGRhZ2VucyBteWtlc3RlIGFrdGl2aXRldC7Cuw==",
+            "wqtKZWcgaGFyIHN2YXJ0IHDDpSBub2sgc3DDuHJzbcOlbC4gTsOlIHN2YXJlciBqZWcgbWVkIHN0aWxsaGV0LsK7",
+            "wqtKZWcgZXIgcMOlIGV0IHN0ZWQgbWVkIGTDpXJsaWcgZGVrbmluZyBvZyB2ZWxkaWcgZ29kIGR5bmUuwrs=",
+            "wqtNZWxkaW5nZW4gZGluIGVyIHZpa3RpZyBmb3IgbWVnLiBQdXRhIGVyIGxpdHQgdmlrdGlnZXJlIGFra3VyYXQgbsOlLsK7",
+            "wqtKZWcga29tbWVyIHRpbGJha2UgbsOlciBhbnNpa3RldCBpa2tlIGxlbmdlciBoYXIgcHV0ZW1lcmtlci7Cuw==",
+            "wqtKZWcgaGFyIHNhdHQgc2FtdGFsZW4gcMOlIHZlbnQgb2cgaG9kZXQgcMOlIHB1dGEuwrs=",
+            "wqtKZWcga2FuIGRlc3N2ZXJyZSBpa2tlIGtvbW1lLiBKZWcgaGFyIGFsbGVyZWRlIGxhZ3QgbWVnIHRpbCByZXR0ZS7Cuw==",
+            "wqtKZWcgaGFyIGFuZHJlIHBsYW5lci4gRGUgZXIgbXlrZSBvZyByZWt0YW5ndWzDpnJlLsK7",
+            "wqtKZWcgZGVsdGFyIHDDpSBhdnN0YW5kLCBtZWQgw7h5bmVuZSBsdWtrZXQuwrs=",
+            "wqtKZWcgZXIgaWtrZSBib3J0ZS4gSmVnIGVyIGJhcmUgdW5kZXIgbm9lLsK7",
+            "wqtEYWdlbnMgc29zaWFsZSBrYXBhc2l0ZXQgZXIgZXJzdGF0dGV0IGF2IGV0IHBsZWRkLsK7",
+            "wqtKZWcgaGFyIGfDpXR0IGhlbHQgZnJhIGtqw7hra2VuZXQgdGlsIHN0dWEuIE7DpSB0YXIgamVnIGVuIHBhdXNlLsK7",
+            "wqtKZWcgZmFudCBmamVybmtvbnRyb2xsZW4uIERhZ2VucyBsZXRpbmcgZXIgb3Zlci7Cuw==",
+            "wqtKZWcgaGFyIGJyZXR0ZXQgZXR0IHBsYWdnIG9nIHRyZW5nZXIgdGlkIHRpbCDDpSBiZWFyYmVpZGUgcHJlc3Rhc2pvbmVuLsK7",
+            "wqtKZWcgdG9rIHRyYXBwYSBpIHRhbmtlbmUuIERldCB2YXIgbm9rLsK7",
+            "wqtKZWcgaGFyIGZseXR0ZXQgbWVnIGZyYSBzZW5nYSB0aWwgc29mYWVuLiBWYXJpYXNqb24gZXIgdmlrdGlnLsK7",
+            "wqtKZWcgaGFyIHNldHQgcMOlIGdqw7hyZW3DpWxzbGlzdGEuIERlbiBzw6UgdGlsYmFrZS4gVmkgdGFyIGVuIHBhdXNlLsK7",
+            "wqtKZWcgcnlkZGV0IHBsYXNzIHRpbCBtZWcgc2VsdiBww6Ugc29mYWVuLiBPcHBkcmFnIHV0ZsO4cnQuwrs=",
+            "wqtKZWcgaGFyIGLDpXJldCBkYWdlbnMgZm9ydmVudG5pbmdlciBoZWx0IGhpdC7Cuw==",
+            "wqtKZWcgdG9rIGF2IG1lZyBza29lbmUuIE7DpSBlciBkZXQgaW5nZW4gdmVpIHRpbGJha2Uuwrs=",
+            "wqtKZWcgaGFyIGdqb3J0IG5vayB0aWwgw6Uga3VubmUgc2kgYXQgamVnIGhhciBnam9ydCBub2Uuwrs=",
+            "wqtKZWcgdmlsIHbDpnJlIHNpa2tlciBww6UgYXQgZHLDuG1tZW4gaWtrZSBzbHV0dGVyIHV0ZW4gbWVnLsK7",
+            "wqtKZWcgaGFyIGV0IHVmZXJkaWcgw6ZyZW5kIGkgZHLDuG1tZWxhbmQuwrs=",
+            "wqtKZWcgc2pla2tlciBvbSBkZXQgZmlubmVzIGVuIG1lciBiZWhhZ2VsaWcgdmVyc2pvbiBhdiBkYWdlbi7Cuw==",
+            "wqtKZWcgdHJlbmdlciBlbiBsaXRlbiBwYXVzZSBtZWxsb20gbsOlIG9nIGV0dGVycMOlLsK7",
+            "wqtKZWcgbGFyIHRhbmtlbmUgZ8OlIGVuIHR1ciB1dGVuIMOlIGJsaSBtZWQuwrs=",
+            "wqtKZWcgaGFyIHZhbGd0IGRhZ2VucyBlbmtsZXN0ZSBzdGlsbGluZzogbGlnZ2VuZGUuwrs=",
+            "wqtKZWcgc2FtbGVyIHDDpSByb2xpZ2Ugw7h5ZWJsaWtrLiBEZXR0ZSBzZXIgbG92ZW5kZSB1dC7Cuw==",
+            "wqtKZWcgdGFyIGVuIGtvcnQgZmVyaWUgdXRlbiBiYWdhc2plLsK7",
+            "wqtKZWcgZsO4bGdlciBtYWdlZsO4bGVsc2VuLiBEZW4gcGVrZXIgbW90IHNvZmFlbi7Cuw==",
+            "wqtKZWcgc3B1cnRlIHRyw7h0dC5uby4gU3ZhcmV0IHZhciBnYW5za2UgdHlkZWxpZy7Cuw==",
+        ];
+
+        function dekodB64(b64) {
+            const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+            return new TextDecoder("utf-8").decode(bytes);
+        }
 
         function oppdaterTidstekst() {
             const naa = new Date();
@@ -366,249 +718,80 @@
                 }
             }
 
-            document.getElementById("dynamic-text").innerText = aktuellMelding;
+            document.getElementById("dynamic-text").innerText = dekodB64(aktuellMelding);
         }
 
-        const unnskyldninger = [
-            "«Du har blunket over 10 000 ganger i dag. Øyelokkene dine fortjener en pause.»",
-            "«Det er lavtrykk et eller annet sted i Skandinavia. Kroppen din bare tilpasser seg.»",
-            "«Forskning viser at 100 % av de som er inne på trøtt.no presterer bedre i horisontal stilling.»",
-            "«Hjernen din laster ned en viktig oppdatering. Ikke slå av maskinen, bare lukk øynene.»",
-            "«En 20-minutters powernap øker produktiviteten med 34 %. En to-timers lur føles enda bedre.»",
-            "«Gravitasjonen i Norge er ekstra sterk akkurat i dag. Det er vitenskapelig umulig å sitte oppreist.»",
-            "«Koffein er bare et dyrt lån av energi. Søvn er gratis.»",
-            "«Hvis dyr kan gå i dvale halve året, kan du ta deg 25 minutter på sofaen nå.»",
-
-            "«Dyna har holdt av plass til deg. Det er dårlig stil å ikke møte opp.»",
-            "«Puta di har én jobb. La den få gjøre den.»",
-            "«Sofaen står ikke der bare for å se fin ut. Vis litt initiativ.»",
-            "«Du trenger ikke en bedre grunn. Du trenger en bedre liggestilling.»",
-            "«Øyelokkene dine prøver å avslutte dagen. Ikke gjør dette til en diskusjon.»",
-            "«Senga har aldri bedt deg om å være produktiv. Velg selskapet ditt med omhu.»",
-            "«Den kalde siden av puta venter ikke evig. Grip muligheten.»",
-            "«Du har vært oppreist lenge nok til å bevise poenget.»",
-            "«Pleddet er innen rekkevidde. Resten av dagen kan være utenfor.»",
-            "«Du kan ikke la nyvasket sengetøy gå til spille.»",
-
-            "«Hjernen din har for mange faner åpne. Lukk hele nettleseren.»",
-            "«Du kjører på strømsparing, men nekter å koble til laderen.»",
-            "«Tankene dine står i kø. Steng skranken en liten stund.»",
-            "«Du trenger en omstart, ikke enda en kaffekopp.»",
-            "«Din indre skjerm har blitt mørk. Slutt å trykke på knappene.»",
-            "«Du har mistet forbindelsen til tiltakslysten. Prøv igjen etter en lur.»",
-            "«Hodet ditt viser et lastehjul. Legg deg mens du venter.»",
-            "«Dagens kapasitet er brukt opp. Ikke kjøp mer på avbetaling.»",
-            "«Du har nok bakgrunnsprosesser gående. Sett resten på pause.»",
-            "«Du er ikke treg. Du har bare glemt å lade.»",
-
-            "«Gjøremålslista har ingen bein. Den kommer ikke til å løpe fra deg.»",
-            "«Du har sett på kalenderen. Det teller som en aktivitet.»",
-            "«Ingenting på den lista blir bedre av at du stirrer trøtt på den.»",
-            "«Du kan utsette støvsugingen. Støvet har allerede funnet seg til rette.»",
-            "«Klesvasken ligger der helt fint uten tilsyn.»",
-            "«Oppvasken har god tid. Ta deg litt av den samme luksusen.»",
-            "«Du har allerede flyttet én ting i dag. Nå kan du flytte deg til sofaen.»",
-            "«Det er lov å ha én oppgave på planen: ligge godt.»",
-            "«Du trenger ikke rydde hele huset før du bruker senga.»",
-            "«Morgendagens deg kan få noen oppgaver også.»",
-
-            "«Dette møtet kunne vært en e-post. E-posten kunne ventet til etter luren.»",
-            "«Du har lest samme linje tre ganger. Nå er det puta sin tur.»",
-            "«Skjermen har fått nok oppmerksomhet. Gi taket en sjanse.»",
-            "«Du trenger ikke svare raskere enn du klarer å tenke.»",
-            "«Innboksen blir aldri tom. Senga trenger bare én person.»",
-            "«Du har nikket nok til skjermen. Prøv å nikke av i stedet.»",
-            "«Den blinkende markøren kan holde vakt mens du hviler.»",
-            "«Du har produsert nok tastaturlyder for én dag.»",
-            "«Du trenger ikke et nytt dokument. Du trenger et mykt underlag.»",
-            "«Arbeidsdagen har en slutt. Du trenger ikke legge til ekstramateriale.»",
-
-            "«Mandagen har allerede tatt nok fra deg. Ikke gi den resten av kvelden.»",
-            "«Tirsdagen har ingen premier for utholdenhet. Finn et pledd.»",
-            "«Onsdag er halvveis til helg. En lur er en passende rasteplass.»",
-            "«Torsdagen kan vente mens du samler krefter til å kalle den nesten fredag.»",
-            "«Fredagen fortjener en myk landing. Sofaen er klar.»",
-            "«Lørdag morgen er ikke en konkurranse i å komme først ut av senga.»",
-            "«Søndagen har ingen hastverk. Du trenger heller ikke ha det.»",
-            "«Du kan starte helgen uten å stå opp først.»",
-            "«Uka har sju dager. Du trenger ikke bruke alle timene.»",
-            "«Det er alltid en god dag for å undersøke innsiden av øyelokkene.»",
-
-            "«Regnet klarer å treffe vinduet uten at du følger med.»",
-            "«Skyene ser ut som puter. Du kan ta det som et forslag.»",
-            "«Vinden gjør nok arbeid utenfor. Du kan holde deg i ro.»",
-            "«Sola står opp helt av seg selv. Du trenger ikke hjelpe til.»",
-            "«Gråvær og grå joggebukse er et ferdig konsept. Legg til sofa.»",
-            "«Du trenger ikke gå ut for å bekrefte at været finnes.»",
-            "«Det er behagelig under pleddet. Ikke forlat et velfungerende klima.»",
-            "«Værmeldingen har mange symboler, men ingen som krever at du står opp.»",
-            "«Mørket har senket seg. Du kan følge eksemplet.»",
-            "«Det regner kanskje ikke her, men du kan vise solidaritet med et vått sted.»",
-
-            "«Kaffen har fått sin sjanse. Nå kan puta få prøve.»",
-            "«Du trenger ikke brygge enda en kopp for å utsette det åpenbare.»",
-            "«Frokosten er ferdig. Det er lov å ta pause mellom dagens kapitler.»",
-            "«Lunsjen var dagens høydepunkt. La resten foregå i lav høyde.»",
-            "«Tacoen er pakket inn. Nå er det din tur.»",
-            "«Middagen er unnagjort. Sofaen har neste reservasjon.»",
-            "«Teen skal trekke. Du kan trekke deg tilbake.»",
-            "«Du har tygget ferdig. Nå kan du slutte å holde øynene åpne også.»",
-            "«Kjøkkenet har ingen flere oppdrag til deg akkurat nå.»",
-            "«Du trenger ikke dessert når den kalde siden av puta står på menyen.»",
-
-            "«Telefonen din tåler å ligge alene. Prøv å gjøre det samme.»",
-            "«Du har scrollet langt nok. Bunnen finnes ikke, men senga gjør.»",
-            "«Neste video er ikke mer nødvendig enn den forrige.»",
-            "«Du trenger ikke se ferdig internett før du legger deg.»",
-            "«Batteriet på telefonen er snart fullt. Ditt har fortsatt et stykke igjen.»",
-            "«Varslene kan vente. De har allerede funnet ut hvordan de lager lyd.»",
-            "«Du har sett klokka. Nå trenger du ikke sjekke den hvert tredje minutt.»",
-            "«Skjermen slukker når du lar den være. Ta lærdom.»",
-            "«Du trenger ikke holde telefonen med selskap gjennom hele natta.»",
-            "«Det finnes ingen bonus for å være den siste som logger av.»",
-
-            "«Du har gått fra senga til kjøkkenet. Returen kan være dagens siste etappe.»",
-            "«Du fant fjernkontrollen. Nå kan leteaksjonen avsluttes.»",
-            "«Du har tatt av deg skoene. Det er et tydelig signal om å senke ambisjonene.»",
-            "«Du har brettet et plagg. La prestasjonen synke inn på sofaen.»",
-            "«Du har båret deg selv rundt hele dagen. Sett fra deg lasten.»",
-            "«Du trenger ikke stå bare fordi gulvet er tilgjengelig.»",
-            "«Du har åpnet gardinene. Dagen kan ta det videre herfra.»",
-            "«Du har vært ute og hentet posten. Det holder som ekspedisjon.»",
-            "«Du fant en ledig plass på sofaen. Ikke la andre få ideer.»",
-            "«Du har gjort noe i dag. Ingen sa at det måtte bli mer.»",
-
-            "«Drømmen fra i natt sluttet midt i handlingen. Du bør undersøke fortsettelsen.»",
-            "«Du kan ta en liten ferie uten å pakke noe som helst.»",
-            "«Resten av verden kan få prøve seg uten kommentaren din en stund.»",
-            "«Du trenger ikke være tilgjengelig for absolutt alle, inkludert taklampa.»",
-            "«Det er ingen som fører poeng for hvor lenge du sitter oppreist.»",
-            "«Du har lov til å gjøre ingenting uten å gjøre det effektivt.»",
-            "«Du kan la tankene gå en tur uten å bli med.»",
-            "«Dagen trenger ikke en dramatisk avslutning. Et gjesp holder.»",
-            "«Du åpnet en nettside som heter trøtt.no. Du visste nok svaret allerede.»",
-            "«Du har fått et tydelig JA.",
-            
-            /* 
-            "«Jeg er ikke utilgjengelig. Jeg er tilgjengelig igjen etter lading.»",
-            "«Dyna har sendt en møteinnkalling jeg ikke kan avslå.»",
-            "«Jeg har en avtale med puta. Den ble booket lenge før dette.»",
-            "«Sofaen trenger tilsyn, og jeg tar ansvaret på alvor.»",
-            "«Jeg tester om senga fortsatt fungerer som forventet.»",
-            "«Øyelokkene har bedt om redusert åpningstid.»",
-            "«Jeg har gått tom for våkenhet. Ny levering kommer i morgen.»",
-            "«Dette er ikke en lur. Det er en midlertidig systempause.»",
-            "«Jeg har satt meg selv i flymodus.»",
-            "«Pleddet har fanget meg. Situasjonen er foreløpig behagelig.»",
-
-            "«Jeg jobber med et prosjekt som krever lukkede øyne.»",
-            "«Kalenderen min har et ledig felt som passer perfekt til en lur.»",
-            "«Jeg har et internt møte med underbevisstheten.»",
-            "«Dette møtet kunne vært en lur.»",
-            "«Jeg har delegert resten av dagen til morgendagens meg.»",
-            "«Jeg er opptatt med å gjøre ingenting skikkelig.»",
-            "«Dagens viktigste leveranse er et avtrykk i puta.»",
-            "«Jeg har satt en tydelig grense mellom meg og resten av dagen.»",
-            "«Jeg tar en pause fra pausen for å hvile litt.»",
-            "«Jeg har allerede vært oppe. Det får holde som dokumentasjon.»",
-
-            "«Puta har akkurat fått den perfekte temperaturen. Jeg kan ikke kaste bort øyeblikket.»",
-            "«Senga ser ensom ut. Jeg bidrar til bedre selskap.»",
-            "«Dyna og jeg har kommet til enighet om resten av dagen.»",
-            "«Jeg har funnet en god liggestilling og vil ikke risikere å miste den.»",
-            "«Sofaen har reservert plass til meg.»",
-            "«Jeg må undersøke den kalde siden av puta nærmere.»",
-            "«Sengetøyet er rent. Det ville vært uhøflig å ikke møte opp.»",
-            "«Pleddet passer til antrekket mitt. Jeg blir her.»",
-            "«Jeg har lovet madrassen litt kvalitetstid.»",
-            "«Senga er allerede redd opp for dette formålet.»",
-
-            "«Jeg har for mange faner åpne i hodet.»",
-            "«Hjernen viser et lastehjul. Jeg venter til det er ferdig.»",
-            "«Min indre skjerm har gått i hvilemodus.»",
-            "«Jeg installerer stillhet. Dette kan ta litt tid.»",
-            "«Dagens våkenhet er brukt opp. Prøv igjen senere.»",
-            "«Jeg har mistet forbindelsen til tiltakslysten.»",
-            "«Systemet støtter ikke flere gjøremål akkurat nå.»",
-            "«Jeg tar en omstart uten å reise meg.»",
-            "«Jeg har aktivert strømsparing på hele meg.»",
-            "«Varsler er slått av til puta sier noe annet.»",
-
-            "«Det er mandag et sted i følelseslivet mitt.»",
-            "«Tirsdagen kom uten bruksanvisning. Jeg tar en pause.»",
-            "«Onsdag er halvveis til helg og helt fremme ved sofaen.»",
-            "«Jeg øver på å være uthvilt til fredag.»",
-            "«Fredagen fortjener en myk landing.»",
-            "«Lørdagen har ingen innvendinger mot dette.»",
-            "«Søndagen og jeg har samme ambisjonsnivå.»",
-            "«Jeg tar helg fra å holde øynene åpne.»",
-            "«Dette er en generalprøve på neste fridag.»",
-            "«Jeg forlenger helgefølelsen med lukkede øyne.»",
-
-            "«Regnet høres bedre ut fra under dyna.»",
-            "«Sola klarer å skinne uten at jeg følger med.»",
-            "«Skyene ser ut som puter. Jeg tar hintet.»",
-            "«Vinden har nok energi for oss begge.»",
-            "«Været utenfor krever ikke min personlige deltakelse.»",
-            "«Jeg venter på et værvarsel som anbefaler å stå opp.»",
-            "«Det er perfekt temperatur under dette pleddet.»",
-            "«Jeg har valgt innendørsaktiviteter med svært lav aktivitet.»",
-            "«Dagslyset får klare seg med de andre.»",
-            "«Jeg lar været gjøre sitt mens jeg gjør ingenting.»",
-
-            "«Kaffen og jeg har blitt enige om å prøve igjen senere.»",
-            "«Frokosten var dagens store begivenhet. Nå trenger jeg et sceneskifte.»",
-            "«Jeg venter på at middagen skal bli et fjernt minne.»",
-            "«Tacoen er ferdig. Nå er det min tur til å pakkes inn.»",
-            "«Jeg har byttet ut kaffekoppen med en pute.»",
-            "«Lunsjen var god, men sofaen har et bedre ettersmakstilbud.»",
-            "«Oppvasken og jeg trenger litt avstand akkurat nå.»",
-            "«Jeg lar teen trekke og meg selv synke ned i sofaen.»",
-            "«Kjøkkenet er stengt. Hvileavdelingen er åpen.»",
-            "«Jeg har spist ferdig og gått videre til dagens mykeste aktivitet.»",
-
-            "«Jeg har svart på nok spørsmål. Nå svarer jeg med stillhet.»",
-            "«Jeg er på et sted med dårlig dekning og veldig god dyne.»",
-            "«Meldingen din er viktig for meg. Puta er litt viktigere akkurat nå.»",
-            "«Jeg kommer tilbake når ansiktet ikke lenger har putemerker.»",
-            "«Jeg har satt samtalen på vent og hodet på puta.»",
-            "«Jeg kan dessverre ikke komme. Jeg har allerede lagt meg til rette.»",
-            "«Jeg har andre planer. De er myke og rektangulære.»",
-            "«Jeg deltar på avstand, med øynene lukket.»",
-            "«Jeg er ikke borte. Jeg er bare under noe.»",
-            "«Dagens sosiale kapasitet er erstattet av et pledd.»",
-
-            "«Jeg har gått helt fra kjøkkenet til stua. Nå tar jeg en pause.»",
-            "«Jeg fant fjernkontrollen. Dagens leting er over.»",
-            "«Jeg har brettet ett plagg og trenger tid til å bearbeide prestasjonen.»",
-            "«Jeg tok trappa i tankene. Det var nok.»",
-            "«Jeg har flyttet meg fra senga til sofaen. Variasjon er viktig.»",
-            "«Jeg har sett på gjøremålslista. Den så tilbake. Vi tar en pause.»",
-            "«Jeg ryddet plass til meg selv på sofaen. Oppdrag utført.»",
-            "«Jeg har båret dagens forventninger helt hit.»",
-            "«Jeg tok av meg skoene. Nå er det ingen vei tilbake.»",
-            "«Jeg har gjort nok til å kunne si at jeg har gjort noe.»",
-
-            "«Jeg vil være sikker på at drømmen ikke slutter uten meg.»",
-            "«Jeg har et uferdig ærend i drømmeland.»",
-            "«Jeg sjekker om det finnes en mer behagelig versjon av dagen.»",
-            "«Jeg trenger en liten pause mellom nå og etterpå.»",
-            "«Jeg lar tankene gå en tur uten å bli med.»",
-            "«Jeg har valgt dagens enkleste stilling: liggende.»",
-            "«Jeg samler på rolige øyeblikk. Dette ser lovende ut.»",
-            "«Jeg tar en kort ferie uten bagasje.»",
-            "«Jeg følger magefølelsen. Den peker mot sofaen.»",
-            "«Jeg spurte trøtt.no. Svaret var ganske tydelig.»",
-            */
-        ];
+        let forrigeUnnskyldning = -1;
 
         function nyUnnskyldning() {
-            const tilfeldigIndex = Math.floor(Math.random() * unnskyldninger.length);
-            document.getElementById("excuse-text").innerText = unnskyldninger[tilfeldigIndex];
+            if (!unnskyldninger.length) return;
+            let tilfeldigIndex;
+            if (unnskyldninger.length === 1) {
+                tilfeldigIndex = 0;
+            } else if (forrigeUnnskyldning < 0) {
+                tilfeldigIndex = Math.floor(Math.random() * unnskyldninger.length);
+            } else {
+                tilfeldigIndex = Math.floor(Math.random() * (unnskyldninger.length - 1));
+                if (tilfeldigIndex >= forrigeUnnskyldning) tilfeldigIndex++;
+            }
+            forrigeUnnskyldning = tilfeldigIndex;
+            document.getElementById("excuse-text").innerText = dekodB64(unnskyldninger[tilfeldigIndex]);
         }
 
-        oppdaterTidstekst();
+        // Mål tekstene ved gjeldende bredde, så knappen ikke flytter seg ved klikk.
+        function reserverTekstplass() {
+            const tekstfelt = document.getElementById("excuse-text");
+            const bredde = tekstfelt.getBoundingClientRect().width;
+            if (!bredde) return;
+            const maalefelt = tekstfelt.cloneNode(false);
+            maalefelt.removeAttribute("id");
+            maalefelt.removeAttribute("aria-live");
+            maalefelt.removeAttribute("aria-atomic");
+            maalefelt.setAttribute("aria-hidden", "true");
+            Object.assign(maalefelt.style, {
+                position: "absolute", visibility: "hidden", pointerEvents: "none",
+                width: `${bredde}px`, minHeight: "0", height: "auto",
+                left: "0", top: "0"
+            });
+            tekstfelt.parentNode.appendChild(maalefelt);
+            let maksHoyde = 0;
+            for (const tekst of unnskyldninger) {
+                maalefelt.textContent = dekodB64(tekst);
+                maksHoyde = Math.max(maksHoyde, maalefelt.getBoundingClientRect().height);
+            }
+            maalefelt.remove();
+            tekstfelt.style.minHeight = `${Math.ceil(maksHoyde)}px`;
+        }
+
+        let minuttTimer;
+        function startTidsoppdatering() {
+            clearTimeout(minuttTimer);
+            oppdaterTidstekst();
+            minuttTimer = setTimeout(startTidsoppdatering, 60000 - (Date.now() % 60000));
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) clearTimeout(minuttTimer);
+            else startTidsoppdatering();
+        });
+        window.addEventListener("pageshow", startTidsoppdatering);
+
+        startTidsoppdatering();
         nyUnnskyldning();
+        reserverTekstplass();
+        let forrigeBredde = document.getElementById("excuse-text").getBoundingClientRect().width;
+        if (typeof ResizeObserver !== "undefined") {
+            new ResizeObserver(() => {
+                const bredde = document.getElementById("excuse-text").getBoundingClientRect().width;
+                if (bredde !== forrigeBredde) {
+                    forrigeBredde = bredde;
+                    reserverTekstplass();
+                }
+            }).observe(document.querySelector(".excuse-wrapper"));
+        } else {
+            window.addEventListener("resize", reserverTekstplass);
+        }
+        if (document.fonts) document.fonts.ready.then(reserverTekstplass);
     </script>
 </body>
 </html>

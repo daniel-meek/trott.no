@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-"""Generer const-blokker til index.html fra dag.csv og unnskyldninger.txt.
+"""Generer Base64-kodede const-blokker til index.html fra dag.csv og unnskyldninger.txt.
 
 Kjor: python oppdater_dag_og_unnskyldninger.py
 Filene leses fra samme mappe som skriptet. index.html endres ikke.
 """
 
+import base64
 import csv
 import io
 import json
@@ -14,6 +15,7 @@ from pathlib import Path
 
 DAGER = {"mandag": 1, "tirsdag": 2, "onsdag": 3, "torsdag": 4, "fredag": 5, "lørdag": 6, "søndag": 0}
 
+
 def les_utf8(path):
     tekst = path.read_text(encoding="utf-8-sig")
     if "\ufffd" in tekst:
@@ -21,11 +23,9 @@ def les_utf8(path):
     return tekst
 
 
-def js(verdi):
-    return (json.dumps(verdi, ensure_ascii=False)
-            .replace("<", "\\u003c")
-            .replace("\u2028", "\\u2028")
-            .replace("\u2029", "\\u2029"))
+def js_b64(verdi):
+    kodet = base64.b64encode(verdi.encode("utf-8")).decode("ascii")
+    return json.dumps(kodet, ensure_ascii=True)
 
 
 def generer(mappe):
@@ -70,10 +70,10 @@ def generer(mappe):
         linjer.append(f"    {nummer}: [ // {dag.capitalize()}")
         for rad in tabell[nummer]:
             linjer.append("        { tid: " + str(rad["tid"]) +
-                          ", tekst: " + js(rad["tekst"]) + " },")
+                          ", tekst: " + js_b64(rad["tekst"]) + " },")
         linjer.append("    ],")
     linjer.extend(["};", "", "const unnskyldninger = ["])
-    linjer.extend("    " + js(tekst) + "," for tekst in unnskyldninger)
+    linjer.extend("    " + js_b64(tekst) + "," for tekst in unnskyldninger)
     linjer.extend(["];", ""])
     output = mappe / "oppdatert_tekst.js"
     output.write_text("\n".join(linjer), encoding="utf-8")
@@ -86,7 +86,7 @@ def main():
     except (OSError, UnicodeError, ValueError) as feil:
         print(f"Feil: {feil}", file=sys.stderr)
         return 1
-    print(f"Laget {output.name}: {antall_dager} tidsoppføringer og "
+    print(f"Laget {output.name} (Base64): {antall_dager} tidsoppføringer og "
           f"{antall_unnskyldninger} unnskyldninger.")
     print("Erstatt de eksisterende const-blokkene i index.html med innholdet.")
     print("index.html og kildefilene er ikke endret.")
